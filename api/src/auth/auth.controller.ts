@@ -16,6 +16,6 @@ export class AuthController {
   findAll() {
     // This route is restricted by AuthGuard
     // JWT strategy
-    return {data:'data'};
+    return { data: 'data' };
   }
 }

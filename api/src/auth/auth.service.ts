@@ -8,7 +8,7 @@ import { log } from 'util';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-   createToken() {
+  createToken() {
     const user: JwtPayload = { email: 'test@email.com' };
     const accessToken = this.jwtService.sign(user);
     return {
@@ -17,7 +17,7 @@ export class AuthService {
     };
   }
 
-   validateUser(payload: JwtPayload): boolean {
+  validateUser(payload: JwtPayload): boolean {
     // put some validation logic here
     // for example query user by id/email/username
     return true;
