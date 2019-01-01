@@ -14,7 +14,8 @@
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "webpack": "webpack --config webpack.config.js"
+    "webpack": "webpack --config webpack.config.js",
+    "build_prod_and_copy":"rm -rf dist && tsc ; rm -rf ../build && mkdir -p ../build/api && cp -rf dist/. ../build/api"
   },
   "dependencies": {
     "@nestjs/common": "^5.0.0-beta.6",
