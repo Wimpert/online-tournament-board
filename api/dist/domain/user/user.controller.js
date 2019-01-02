@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_service_1 = require("./user.service");
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
-const operators_1 = require("rxjs/operators");
 const user_entity_1 = require("./user.entity");
 let UserController = class UserController {
     constructor(userService) {
@@ -27,13 +26,11 @@ let UserController = class UserController {
     update(user) {
         return this.userService.save(user);
     }
+    test() {
+        return rxjs_1.of("hello world");
+    }
     findOne(id) {
-        return this.userService.findOne(id).pipe(operators_1.map(tournament => {
-            if (tournament === undefined) {
-                throw new common_1.HttpException('Tournament not found', common_1.HttpStatus.NOT_FOUND);
-            }
-            return tournament;
-        }));
+        return this.userService.findOne(id);
     }
 };
 __decorate([
@@ -50,6 +47,12 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "update", null);
+__decorate([
+    common_1.Get('test'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", rxjs_1.Observable)
+], UserController.prototype, "test", null);
 __decorate([
     common_1.Get(':id'),
     __param(0, common_1.Param()),

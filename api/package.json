@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"**/*.ts\"",
-    "start": "DB_USER=test DB_passwd= ts-node -r tsconfig-paths/register src/main.ts",
-    "start:dev": "nodemon",
+    "start": "DB_NAME=tournament-board DB_USER=root DB_passwd= ts-node -r tsconfig-paths/register src/main.ts",
+    "start:dev": "DB_NAME=tournament-board DB_USER=root DB_passwd= nodemon",
     "prestart:prod": "rm -rf dist && tsc",
     "start:prod": "node dist/main.js",
     "start:hmr": "node dist/server",
@@ -15,7 +15,7 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "webpack": "webpack --config webpack.config.js",
-    "build_prod_and_copy":"rm -rf dist && tsc ; rm -rf ../build && mkdir -p ../build/api && cp -rf dist/. ../build/api"
+    "build_prod_and_copy": "rm -rf dist && tsc; mkdir -p ../tb-build/app && rm -rf ../tb-build/app && cp -rf dist/. ../tb-build/app && cp package.json ../tb-build/app"
   },
   "dependencies": {
     "@nestjs/common": "^5.0.0-beta.6",
@@ -27,6 +27,7 @@
     "@nestjs/typeorm": "^5.2.2",
     "@nestjs/websockets": "^5.0.0-beta.6",
     "fastify-formbody": "^2.0.0",
+    "mysql": "^2.16.0",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",

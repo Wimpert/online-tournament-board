@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build_prod_and_copy":"npm run build && cp -rf dist ../build/client"
+    "build_prod_and_copy":"npm run build &&  mkdir -p ../tb-build/app/client && rm -rf ../tb-build/app/client && cp -rf dist ../tb-build/app/client"
   },
   "private": true,
   "dependencies": {

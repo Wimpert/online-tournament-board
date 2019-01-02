@@ -1,0 +1,5 @@
+{
+	"scripts": {
+		"build": "cd api && npm run build_prod_and_copy && cd ../frontend && npm run build_prod_and_copy"
+	}
+}

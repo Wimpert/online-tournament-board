@@ -1,15 +1,13 @@
 import { UserService } from './user.service';
 import {
   Controller,
-  HttpStatus,
-  HttpException,
   Post,
   Body,
   Get,
   Param,
   Put,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from './user.entity';
 
@@ -26,16 +24,15 @@ export class UserController {
   update(@Body() user?: User): Observable<User> {
     return this.userService.save(user);
   }
+  
+  @Get('test')
+  test(): Observable<string> {
+    return  of("hello world");
+  }
 
   @Get(':id')
   findOne(@Param() id: number): Observable<User> {
-    return this.userService.findOne(id).pipe(
-      map(tournament => {
-        if (tournament === undefined) {
-          throw new HttpException('Tournament not found', HttpStatus.NOT_FOUND);
-        }
-        return tournament;
-      }),
-    );
+    return this.userService.findOne(id);
   }
+  
 }
