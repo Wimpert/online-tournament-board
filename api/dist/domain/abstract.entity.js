@@ -9,21 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_entity_1 = require("./../user/user.entity");
 const typeorm_1 = require("typeorm");
-const abstract_entity_1 = require("domain/abstract.entity");
-let Tournament = class Tournament extends abstract_entity_1.AbstractEntity {
-};
+class AbstractEntity {
+    updateDatesForSave() {
+        if (!this.createdDate) {
+            this.createdDate = new Date();
+        }
+        this.lastUpdated = new Date();
+    }
+}
 __decorate([
-    typeorm_1.PrimaryColumn(),
-    __metadata("design:type", String)
-], Tournament.prototype, "name", void 0);
+    typeorm_1.Column({ name: 'created' }),
+    __metadata("design:type", Date)
+], AbstractEntity.prototype, "createdDate", void 0);
 __decorate([
-    typeorm_1.ManyToOne(type => user_entity_1.User, user => user.tournaments),
-    __metadata("design:type", user_entity_1.User)
-], Tournament.prototype, "user", void 0);
-Tournament = __decorate([
-    typeorm_1.Entity()
-], Tournament);
-exports.Tournament = Tournament;
-//# sourceMappingURL=tournament.entity.js.map
+    typeorm_1.Column({ name: 'updated' }),
+    __metadata("design:type", Date)
+], AbstractEntity.prototype, "lastUpdated", void 0);
+__decorate([
+    typeorm_1.BeforeInsert(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AbstractEntity.prototype, "updateDatesForSave", null);
+exports.AbstractEntity = AbstractEntity;
+//# sourceMappingURL=abstract.entity.js.map

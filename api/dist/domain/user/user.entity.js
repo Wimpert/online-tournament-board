@@ -9,9 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const abstract_entity_1 = require("./../abstract.entity");
 const tournament_entity_1 = require("./../tournament/tournament.entity");
 const typeorm_1 = require("typeorm");
-let User = class User {
+let User = class User extends abstract_entity_1.AbstractEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
@@ -21,6 +22,10 @@ __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
 __decorate([
     typeorm_1.Column({ name: 'UserName' }),
     __metadata("design:type", String)

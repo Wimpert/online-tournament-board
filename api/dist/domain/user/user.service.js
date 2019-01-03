@@ -22,7 +22,9 @@ let UserService = class UserService {
         this.userRepository = userRepository;
     }
     save(user) {
-        return rxjs_1.from(this.userRepository.save(user));
+        const userToSave = new user_entity_1.User();
+        Object.assign(userToSave, user);
+        return rxjs_1.from(this.userRepository.save(userToSave));
     }
     findOne(id) {
         return rxjs_1.from(this.userRepository.findOne(id));
