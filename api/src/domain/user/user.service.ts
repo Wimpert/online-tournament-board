@@ -12,7 +12,9 @@ export class UserService {
   ) {}
 
   save(user: User): Observable<User> {
-    return from(this.userRepository.save(user));
+    const userToSave = new User();
+    Object.assign(userToSave, user);
+    return from(this.userRepository.save(userToSave));
   }
 
   findOne(id: number): Observable<User> {
