@@ -6,6 +6,8 @@ import {
   Get,
   Param,
   Put,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -25,14 +27,17 @@ export class UserController {
     return this.userService.save(user);
   }
   
-  @Get('test')
-  test(): Observable<string> {
-    return  of("hello world");
-  }
 
   @Get(':id')
   findOne(@Param() id: number): Observable<User> {
-    return this.userService.findOne(id);
+    return this.userService.findOne(id).pipe(
+      map(user => {
+        if (user === undefined) {
+          throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+        return user;
+      }),
+    );;
   }
   
 }

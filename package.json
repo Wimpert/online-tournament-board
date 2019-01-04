@@ -1,5 +1,6 @@
 {
 	"scripts": {
-		"build": "cd api && npm run build_prod_and_copy && cd ../frontend && npm run build_prod_and_copy"
+		"build": "cd api && npm run build_prod_and_copy && cd ../frontend && npm run build_prod_and_copy",
+		"start": "mysql.server start && cd api && npm run start:dev & cd frontend && npm start"
 	}
 }
