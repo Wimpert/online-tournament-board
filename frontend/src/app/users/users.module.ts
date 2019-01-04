@@ -1,3 +1,4 @@
+import { UserService } from './services/user.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -12,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     UsersRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [SignUpComponent, LoginComponent]
+  declarations: [SignUpComponent, LoginComponent],
+  providers: [UserService]
 })
 export class UsersModule { }

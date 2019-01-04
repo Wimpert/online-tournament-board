@@ -1,6 +1,7 @@
 import { PasswordValidation } from './../password.validation';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { UserService } from '../services/user.service';
  
 
 @Component({
@@ -12,6 +13,7 @@ export class SignUpComponent  {
 
   signUpForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
+    userName: ['', [Validators.required]],
     password: ['', Validators.required],
     confirmPassword: ['', Validators.required],
     firstName: [''],
@@ -20,6 +22,19 @@ export class SignUpComponent  {
     validator: PasswordValidation.MatchPassword // your validation method
   });
 
-  constructor(private formBuilder : FormBuilder) {}
+  constructor(private formBuilder : FormBuilder, private userService: UserService) {}
+
+  onSubmit(){
+
+    if(this.signUpForm.valid){
+      const user : any = {}
+      user.email = this.signUpForm.controls.email.value;
+      user.password = this.signUpForm.controls.password.value;
+      user.userName = this.signUpForm.controls.userName.value;
+      user.firstName = this.signUpForm.controls.firstName.value;
+      user.lastName = this.signUpForm.controls.lastName.value;
+      this.userService.createUser(user);
+    }
+  }
 
 }

@@ -1,6 +1,6 @@
 import { AbstractEntity } from './../abstract.entity';
 import { Tournament } from './../tournament/tournament.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class User extends AbstractEntity {
@@ -14,13 +14,13 @@ export class User extends AbstractEntity {
   @Column()
   password: string;
 
-  @Column({ name: 'UserName' })
+  @Column({ name: 'user_name' })
   userName: string;
 
-  @Column({ name: 'FirstName' })
+  @Column({ name: 'first_name' })
   firstName: string;
 
-  @Column({ name: 'LastName' })
+  @Column({ name: 'last_name' })
   lastName: string;
 
   @OneToMany(type => Tournament, tournament => tournament.user, { eager: true })

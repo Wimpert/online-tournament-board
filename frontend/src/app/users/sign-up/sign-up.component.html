@@ -1,4 +1,4 @@
-<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit(signUpForm)">
     <input class="input" type="text" placeholder="Email*"  formControlName="email">
     <div *ngIf="signUpForm.controls['email'].dirty && signUpForm.controls['email'].errors" >
         <div class="error" *ngIf="signUpForm.controls['email'].errors.required">
@@ -7,6 +7,10 @@
         <div class="error" *ngIf="signUpForm.controls['email'].errors.email">
             Not a valid email
         </div>
+    </div>
+    <input class="input" type="text" placeholder="User Name*"  formControlName="userName">
+    <div class="error" *ngIf="signUpForm.controls['email'].dirty  && signUpForm.controls['userName'].errors" >
+        User name is mandatory
     </div>
     <input class="input" type="password" placeholder="Password*"  formControlName="password">
     <input class="input" type="password" placeholder="Confirm Password*"  formControlName="confirmPassword">
