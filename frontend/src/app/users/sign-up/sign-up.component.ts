@@ -2,6 +2,7 @@ import { PasswordValidation } from './../password.validation';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { User } from '../../../models/user.model';
  
 
 @Component({
@@ -27,13 +28,15 @@ export class SignUpComponent  {
   onSubmit(){
 
     if(this.signUpForm.valid){
-      const user : any = {}
+      const user : User = new User();
       user.email = this.signUpForm.controls.email.value;
       user.password = this.signUpForm.controls.password.value;
       user.userName = this.signUpForm.controls.userName.value;
       user.firstName = this.signUpForm.controls.firstName.value;
       user.lastName = this.signUpForm.controls.lastName.value;
-      this.userService.createUser(user);
+      this.userService.createUser(user).subscribe(
+        (user) => {console.log(user);}
+      );
     }
   }
 

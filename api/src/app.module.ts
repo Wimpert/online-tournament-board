@@ -1,6 +1,9 @@
+import { JwtStrategy } from './auth/jwt.strategy';
+import { AuthMiddleware } from './auth/auth.middleware';
+import { PassportModule } from '@nestjs/passport';
 import { DomainModule } from './domain/domain.module';
 import { AuthModule } from './auth/auth.module';
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -16,7 +19,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
-    DomainModule,
+    DomainModule
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer : MiddlewareConsumer){
+    consumer.apply(AuthMiddleware)
+    .forRoutes({ path: '*', method: RequestMethod.ALL });;
+  }
+}

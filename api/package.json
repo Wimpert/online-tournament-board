@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"**/*.ts\"",
-    "start": "DB_NAME=tournament-board DB_USER=root DB_passwd= ts-node -r tsconfig-paths/register src/main.ts",
-    "start:dev": "DB_NAME=tournament-board DB_USER=root DB_passwd= nodemon",
+    "start": "JWT_SECRET=DEV_DE_JACKIES_SECRET DB_NAME=tournament-board DB_USER=root DB_passwd= ts-node -r tsconfig-paths/register src/main.ts",
+    "start:dev": "JWT_SECRET=DEV_DE_JACKIES_SECRET DB_NAME=tournament-board DB_USER=root DB_passwd= nodemon",
     "prestart:prod": "rm -rf dist && tsc",
     "start:prod": "node dist/main.js",
     "start:hmr": "node dist/server",

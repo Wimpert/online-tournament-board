@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../../../models/user.model';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
@@ -9,8 +11,9 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) {}
 
-  createUser(user){
-    console.log(user.firstName);
+  createUser(user: User): Observable<User>{
+    console.log(this.url);
+    return this.httpClient.post<User>(this.url, user);
   }
 
 }
