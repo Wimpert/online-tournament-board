@@ -25,6 +25,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 export class AppModule implements NestModule {
   configure(consumer : MiddlewareConsumer){
     consumer.apply(AuthMiddleware)
-    .forRoutes({ path: '*', method: RequestMethod.ALL });;
+    .forRoutes(
+      { path: '*', method: RequestMethod.ALL }
+    );
   }
 }

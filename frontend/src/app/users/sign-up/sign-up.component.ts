@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { User } from '../../../models/user.model';
- 
+
 
 @Component({
   selector: 'app-sign-up',
@@ -23,10 +23,11 @@ export class SignUpComponent  {
     validator: PasswordValidation.MatchPassword // your validation method
   });
 
+  showError = false;
+
   constructor(private formBuilder : FormBuilder, private userService: UserService) {}
 
   onSubmit(){
-
     if(this.signUpForm.valid){
       const user : User = new User();
       user.email = this.signUpForm.controls.email.value;
@@ -35,9 +36,20 @@ export class SignUpComponent  {
       user.firstName = this.signUpForm.controls.firstName.value;
       user.lastName = this.signUpForm.controls.lastName.value;
       this.userService.createUser(user).subscribe(
-        (user) => {console.log(user);}
+        (user) => {
+
+          console.log("user", user);
+        },
+        (err) => {
+          this.showError = true;
+        },
+        ()=>{console.log('complete')}
       );
     }
+  }
+
+  toggleError() {
+    this.showError = !this.showError;
   }
 
 }

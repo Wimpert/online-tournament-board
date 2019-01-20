@@ -1,3 +1,7 @@
+<div *ngIf="showError" class="notification is-danger">
+  <button class="delete" (click)="toggleError()" ></button>
+  Something when wrong saving this user.
+</div>
 <form [formGroup]="signUpForm" (ngSubmit)="onSubmit(signUpForm)">
     <input class="input" type="text" placeholder="Email*"  formControlName="email">
     <div *ngIf="signUpForm.controls['email'].dirty && signUpForm.controls['email'].errors" >
@@ -14,7 +18,7 @@
     </div>
     <input class="input" type="password" placeholder="Password*"  formControlName="password">
     <input class="input" type="password" placeholder="Confirm Password*"  formControlName="confirmPassword">
-    <div class="error" *ngIf="signUpForm.controls['password'].dirty  && signUpForm.controls.confirmPassword.errors?.MatchPassword">Password not match</div>
+    <div class="error" *ngIf="signUpForm.controls['password'].dirty  && signUpForm.controls['confirmPassword'].errors?.MatchPassword">Password not match</div>
     <input class="input" type="text" placeholder="First Name"  formControlName="firstName">
     <input class="input" type="text" placeholder="Last Name"  formControlName="lastName">
     <button class="button" type="submit" [disabled]="!signUpForm.valid">Sign Up</button>

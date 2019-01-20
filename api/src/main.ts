@@ -1,3 +1,5 @@
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { join } from 'path';
