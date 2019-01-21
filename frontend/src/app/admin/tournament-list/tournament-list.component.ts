@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { TournamentService } from '../services/tournament.service';
 
 @Component({
   selector: 'app-tournament-list',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TournamentListComponent implements OnInit {
 
-  constructor() { }
+  tournaments$ :  Observable<any>
+
+  constructor(private tournamentService: TournamentService) { }
 
   ngOnInit() {
+    this.tournaments$ = this.tournamentService.findAllForUser();
   }
 
 }

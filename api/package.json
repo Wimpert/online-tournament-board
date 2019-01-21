@@ -18,6 +18,7 @@
     "build_prod_and_copy": "rm -rf dist && tsc; mkdir -p ../tb-build/app && rm -rf ../tb-build/app && cp -rf dist/. ../tb-build/app && cp package.json ../tb-build/app"
   },
   "dependencies": {
+    "@nest-middlewares/cookie-parser": "^5.1.1",
     "@nestjs/common": "^5.0.0-beta.6",
     "@nestjs/core": "^5.0.0-beta.6",
     "@nestjs/jwt": "^0.2.1",

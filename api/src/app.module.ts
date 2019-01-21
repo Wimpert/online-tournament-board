@@ -1,3 +1,5 @@
+import { LoginController } from './domain/login/login.controller';
+import { LoginMiddleware } from './domain/login/login.middleware';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { PassportModule } from '@nestjs/passport';
@@ -5,6 +7,7 @@ import { DomainModule } from './domain/domain.module';
 import { AuthModule } from './auth/auth.module';
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
 
 @Module({
   imports: [
@@ -24,9 +27,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 })
 export class AppModule implements NestModule {
   configure(consumer : MiddlewareConsumer){
-    consumer.apply(AuthMiddleware)
+    consumer.apply(CookieParserMiddleware).forRoutes(
+      { path: '*', method: RequestMethod.ALL }
+    ).apply(AuthMiddleware)
     .forRoutes(
       { path: '*', method: RequestMethod.ALL }
     );
-  }
+}
 }

@@ -1,23 +1,24 @@
-import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { JWT_TOKEN_NAME } from './../constants';
 import { JwtStrategy } from './jwt.strategy';
 import { Injectable, MiddlewareFunction, NestMiddleware, Inject, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
 
-  constructor(private readonly jwtStrategy: JwtStrategy){}
+  constructor(private readonly jwtStrategy: JwtStrategy, private jwtService: JwtService){}
 
   resolve(...args: any[]): MiddlewareFunction {
-    return (req : Request, res, next) => {
+    return (req , res, next) => {
       if(req.originalUrl === '/api/user' || req.originalUrl === '/api/login'){
         next();
-      } else if(req.headers.authorization === undefined || !(req.headers.authorization.split(' ')[0] === 'Bearer')){
-       res.send(HttpStatus.UNAUTHORIZED);
+      } else if(req.cookies === undefined || req.cookies[JWT_TOKEN_NAME] === undefined){
+       res.sendStatus(HttpStatus.UNAUTHORIZED);
       } else{
-        const token = JSON.parse(req.headers.authorization.split(' ')[1]) as JwtPayload;
-        if(! this.jwtStrategy.validate(token)) {
-          res.send(HttpStatus.UNAUTHORIZED);
+        const token = req.cookies[JWT_TOKEN_NAME];
+        console.log('token',token);
+        if(!this.jwtService.verify(token)) {
+          res.sendStatus(HttpStatus.UNAUTHORIZED);
         }
         next();
       }

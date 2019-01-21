@@ -11,7 +11,11 @@ export class TournamentService {
     private readonly tournamentRepository: Repository<Tournament>,
   ) {}
 
-  findTournamentById(id: string): Observable<Tournament> {
-    return from(this.tournamentRepository.findOne(id));
+  findOne(tournament: any): Observable<Tournament> {
+    return from(this.tournamentRepository.findOne(tournament));
+  }
+
+  find(tournament: any): Observable<Tournament[]> {
+    return from(this.tournamentRepository.find(tournament));
   }
 }

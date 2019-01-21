@@ -1,4 +1,6 @@
+import { User } from './../../../../frontend/src/models/user.model';
+
 export interface JwtPayload {
-  email: string;
+  user: User;
   id: number;
 }

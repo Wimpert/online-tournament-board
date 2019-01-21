@@ -1,3 +1,5 @@
+import { JwtService } from '@nestjs/jwt';
+import { JWT_TOKEN_NAME } from './../../constants';
 import { TournamentService } from './tournament.service';
 import { Tournament } from './tournament.entity';
 import {
@@ -7,17 +9,19 @@ import {
   Res,
   HttpStatus,
   HttpException,
+  Req,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { request } from 'http';
 
 @Controller('tournament')
 export class TournamentController {
-  constructor(private readonly tournamentService: TournamentService) {}
+  constructor(private readonly tournamentService: TournamentService, private jwtService: JwtService) {}
 
   @Get(':id')
   findById(@Param('id') id): Observable<Tournament> {
-    return this.tournamentService.findTournamentById(id).pipe(
+    return this.tournamentService.findOne({id:id}).pipe(
       map(tournament => {
         if (tournament === undefined) {
           throw new HttpException('Tournament not found', HttpStatus.NOT_FOUND);
@@ -25,5 +29,11 @@ export class TournamentController {
         return tournament;
       }),
     );
+  }
+
+  @Get()
+  findByUser( @Req() request) : Observable<Tournament[]> {
+    const token = this.jwtService.decode(request.cookies[JWT_TOKEN_NAME]);
+    return this.tournamentService.find({userId: token['user'].id});
   }
 }

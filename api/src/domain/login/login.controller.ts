@@ -1,25 +1,18 @@
-import { tap, filter, map } from 'rxjs/operators';
-import { Controller, Post, Body } from "@nestjs/common";
-import { Observable, of } from "rxjs";
-import { JwtPayload } from "auth/interfaces/jwt-payload.interface";
-import { userInfo } from "os";
-import { UserService } from "domain/user/user.service";
-import * as bcrypt from 'bcrypt';
-import { User } from 'domain/user/user.entity';
+import { JWT_TOKEN_NAME } from './../../constants';
+import { AuthService } from './../../auth/auth.service';
+import { Controller, Post, Req, Res, HttpStatus } from "@nestjs/common";
+
 
 @Controller('login')
 export class LoginController {
 
-    constructor(private readonly userService: UserService){}
+    constructor(private authService : AuthService){}
     
     @Post()
-    login(@Body() credentials : {username:string, password: string}): Observable<{loggedIn:boolean, jwt: JwtPayload}>{
-        return this.userService.findOne({username: credentials.username,}).pipe(
-            tap(console.log),
-            filter((user:User) => {
-                return bcrypt.compareSync(credentials.password, user.password);
-            }),
-            map(_ => true)
-        );
+    login(@Req() request, @Res() response){
+        const token = this.authService.createToken({user:request.locals.user, id: request.locals.user.id});
+        response.cookie(JWT_TOKEN_NAME, token.accessToken, {maxAge: 1000*60*60*100} );
+        response.status(HttpStatus.OK);
+        response.send();
     }
 }
