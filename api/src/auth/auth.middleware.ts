@@ -16,8 +16,11 @@ export class AuthMiddleware implements NestMiddleware {
        res.sendStatus(HttpStatus.UNAUTHORIZED);
       } else{
         const token = req.cookies[JWT_TOKEN_NAME];
-        console.log('token',token);
-        if(!this.jwtService.verify(token)) {
+        try {
+           if(!this.jwtService.verify(token)) {
+            res.sendStatus(HttpStatus.UNAUTHORIZED);
+           }
+        } catch (error) {
           res.sendStatus(HttpStatus.UNAUTHORIZED);
         }
         next();

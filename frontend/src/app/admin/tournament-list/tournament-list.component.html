@@ -1,4 +1,5 @@
-<p>
-  tournament-list works!
-</p>
-{{tournaments$ | async | json}}
+<button>New</button>
+<h4>Tournaments</h4>
+<a *ngFor="let tournament of tournaments$ | async" routerLink="/admin/{{tournament.id}}">
+  {{tournament.name}}
+</a>

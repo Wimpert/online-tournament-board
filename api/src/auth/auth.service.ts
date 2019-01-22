@@ -1,3 +1,4 @@
+import { JWT_EXPERATION_TIME } from './../constants';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
@@ -10,7 +11,7 @@ export class AuthService {
   createToken(jwtPayLoad : JwtPayload) {
     const accessToken = this.jwtService.sign(jwtPayLoad);
     return {
-      expiresIn: 3600,
+      expiresIn: JWT_EXPERATION_TIME,
       accessToken,
     };
   }

@@ -12,8 +12,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { request } from 'http';
+import { map } from 'rxjs/operators';
+import { Request } from 'express';
 
 @Controller('tournament')
 export class TournamentController {
@@ -32,7 +32,7 @@ export class TournamentController {
   }
 
   @Get()
-  findByUser( @Req() request) : Observable<Tournament[]> {
+  findByUser(@Req() request: Request) : Observable<Tournament[]> {
     const token = this.jwtService.decode(request.cookies[JWT_TOKEN_NAME]);
     return this.tournamentService.find({userId: token['user'].id});
   }

@@ -10,7 +10,7 @@ export class TournamentService {
   constructor(private httpClient : HttpClient) {}
 
   findAllForUser(){
-    return this.httpClient.get(this.url,{withCredentials:true});
+    return this.httpClient.get(`${this.url}`,{withCredentials:true});
   }
 
 

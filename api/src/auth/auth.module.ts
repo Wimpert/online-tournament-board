@@ -1,3 +1,4 @@
+import { JWT_EXPERATION_TIME } from './../constants';
 
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -11,7 +12,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secretOrPrivateKey: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: JWT_EXPERATION_TIME,
       },
     }),
   ],
