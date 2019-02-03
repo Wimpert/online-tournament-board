@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { User } from './user.entity';
+import { User } from '../entities/user.entity';
 import { Request, Response } from 'express';
 
 @Controller('user')

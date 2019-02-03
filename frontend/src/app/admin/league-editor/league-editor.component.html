@@ -1,0 +1,5 @@
+<h6>League</h6>
+<p>
+  {{league | json}}
+</p>
+<input type="text" [ngModel]="league.name" (ngModelChange)="leagueChanged($event)">

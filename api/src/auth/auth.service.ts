@@ -21,4 +21,8 @@ export class AuthService {
     // for example query user by id/email/username
     return true;
   }
+
+  getUserIdFromJwt(payload: JwtPayload): number {
+    return 9;
+  }
 }

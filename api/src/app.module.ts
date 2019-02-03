@@ -21,6 +21,7 @@ import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
+      logging: true
     }),
     DomainModule
   ],

@@ -1,5 +1,6 @@
-<button>New</button>
+<button routerLink="/admin/edit" routerLinkActive="router-link-active" >New</button>
 <h4>Tournaments</h4>
-<a *ngFor="let tournament of tournaments$ | async" routerLink="/admin/{{tournament.id}}">
+
+<a *ngFor="let tournament of tournaments$ | async" routerLink="/admin/edit/{{tournament.id}}">
   {{tournament.name}}
 </a>
