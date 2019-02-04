@@ -1,5 +1,3 @@
 <h6>League</h6>
-<p>
-  {{league | json}}
-</p>
 <input type="text" [ngModel]="league.name" (ngModelChange)="leagueChanged($event)">
+<app-group-editor *ngFor="let group of league.groups" [group]="group" ></app-group-editor>

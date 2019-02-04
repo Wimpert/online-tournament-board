@@ -1,4 +1,4 @@
-import { AbstractEntity } from '../abstract.entity';
+import { AbstractEntity } from './abstract.entity';
 import { Tournament } from './tournament.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 

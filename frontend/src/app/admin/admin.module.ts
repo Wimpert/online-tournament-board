@@ -7,6 +7,9 @@ import { TournamentService } from './services/tournament.service';
 import { LeagueComponent } from './league/league.component';
 import { LeagueEditorComponent } from './league-editor/league-editor.component';
 import { FormsModule } from '@angular/forms';
+import { GroupEditorComponent } from './group-editor/group-editor.component';
+import { TeamEditorComponent } from './team-editor/team-editor.component';
+import { MatchEditorComponent } from './match-editor/match-editor.component';
 
 @NgModule({
   imports: [
@@ -14,7 +17,7 @@ import { FormsModule } from '@angular/forms';
     AdminRoutingModule,
     FormsModule
   ],
-  declarations: [TournamentListComponent, TournamentEditorComponent, LeagueComponent, LeagueEditorComponent],
+  declarations: [TournamentListComponent, TournamentEditorComponent, LeagueComponent, LeagueEditorComponent, GroupEditorComponent, TeamEditorComponent, MatchEditorComponent],
   providers: [TournamentService]
 })
 export class AdminModule { }

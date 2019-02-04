@@ -1,0 +1,5 @@
+<p>
+  group: {{group .name}}
+</p>
+<app-team-editor *ngFor="let team of group.teams" [team]="team"></app-team-editor>
+<app-match-editor *ngFor="let match of group.matches" [match]="match"></app-match-editor>

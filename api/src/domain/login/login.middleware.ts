@@ -19,7 +19,7 @@ export class LoginMiddleware implements NestMiddleware {
             if(!req.locals){
               req.locals = {};
             }
-            req.locals.user = user;
+            req.locals.user = {... user, tournament : []};
             next();
           } else {
             res.sendStatus(HttpStatus.UNAUTHORIZED);

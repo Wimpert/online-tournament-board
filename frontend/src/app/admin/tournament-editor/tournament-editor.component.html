@@ -1,4 +1,6 @@
+ <div *ngIf="tournament$ | async as tournament">
+   <input type="text" [ngModel]="tournament.name" (ngModelChange)=tournamentChanged($event)>
+    <app-league-editor *ngFor="let league of tournament.leagues" [league]="league"></app-league-editor>
+  </div>
 
-<button (click)="save()">Save</button>
-<div>{{tournament$ | async | json}}</div>
-<app-league-editor *ngFor="let league of (tournament$ | async)?.leagues" [league]="league"></app-league-editor>
+

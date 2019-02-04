@@ -1,6 +1,6 @@
 import { LeagueService } from './league.service';
 import { League } from './../entities/league.entity';
-import { UpdateResult } from 'typeorm';
+import { UpdateResult, DeleteResult } from 'typeorm';
 import { Post, Request, Put, Delete } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_TOKEN_NAME } from './../../constants';
@@ -16,7 +16,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, filter, switchMap, tap } from 'rxjs/operators';
 import { create } from 'domain';
 import { User } from 'domain/entities/user.entity';
 
@@ -43,14 +43,27 @@ export class TournamentController {
   }
 
   @Put('/league')
-  updateLeagua(@Body() league : League) : Observable<Tournament> {
+  updateLeague(@Body() league : League) : Observable<Tournament> {
     return this.leagueService.update(league);
+  }
+
+  @Put()
+  update(@Body() tournament : Tournament) : Observable<Tournament> {
+    return this.tournamentService.update(tournament);
   }
 
   @Post()
   create(@Request() req) : Observable<Tournament> {
     const tournamentToSave = this.tournamentService.createNew(Number(this.jwtService.decode(req.cookies[JWT_TOKEN_NAME])['user'].id));
     return this.tournamentService.save(tournamentToSave);
+  };
+
+  @Delete(':id')
+  delete(@Param('id') id, @Request() req) : Observable<DeleteResult> {
+   return this.tournamentService.findOne({id:id, user: Number(this.jwtService.decode(req.cookies[JWT_TOKEN_NAME])['user'].id)}).pipe(
+     filter(tournament => tournament !== undefined),
+     switchMap(_ => this.tournamentService.delete(id))
+   );
   };
  
 }
