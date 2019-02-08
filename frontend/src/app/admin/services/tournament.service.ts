@@ -1,3 +1,4 @@
+import { Match } from './../../../models/match.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
@@ -34,6 +35,10 @@ export class TournamentService {
   getNewTournament(){
     const tournament = new Tournament()
 
+  }
+
+  updateMatch(match: Match) : Observable<Tournament>{
+    return this.httpClient.put<Tournament>(`${this.url}/match`, match ,{withCredentials: true});
   }
 
   }

@@ -20,4 +20,10 @@ export class Team{
   @OneToMany(type => Match, match => match.outTeam )
   outMatches:  Match[];
 
+  matchesPlayed : number = 0;
+  matchesWon : number = 0;
+  matchesLost : number = 0;
+  matchesDrawed : number = 0;
+  points: number = 0;
+
 }

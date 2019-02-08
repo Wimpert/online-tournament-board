@@ -1,6 +1,15 @@
- <div *ngIf="tournament$ | async as tournament">
-   <input type="text" [ngModel]="tournament.name" (ngModelChange)=tournamentChanged($event)>
-    <app-league-editor *ngFor="let league of tournament.leagues" [league]="league"></app-league-editor>
+<div *ngIf="tournament$ | async as tournament">
+    <input type="text" [ngModel]="tournament.name" (ngModelChange)=tournamentChanged($event)>
+    <div>
+        <mat-card>
+           <app-quick-match-editor [allMatches]="allMatches$ | async"></app-quick-match-editor>
+        </mat-card>
+    </div>
+    <mat-tab-group mat-align-tabs="end" >
+      <mat-tab  *ngFor="let league of tournament.leagues; trackBy: trackLeague" label="{{league.name}}">
+        <app-league-editor [league]="league"></app-league-editor>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 
 

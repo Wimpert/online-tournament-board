@@ -1,3 +1,8 @@
-<div>
-  <span>{{match.homeTeam.name}} - {{match.outTeam.name}}</span>
+<div *ngIf="match">
+  <span>{{match.matchNr}}</span>
+  <span>{{match.homeTeam.name}}</span>
+  <input type="number" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
+  -
+  <input type="number" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
+  <span>{{match.outTeam.name}}</span>
 </div>

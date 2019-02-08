@@ -25,5 +25,9 @@ export class Group{
   @OneToMany(type => GroupMatch, match => match.group , {cascade:true, eager: true})
   matches: GroupMatch[]
 
+  getTeamById(id: number){
+    return this.teams.find((team: Team) => team.id === id);
+  }
+
 
 }

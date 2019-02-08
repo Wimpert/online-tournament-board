@@ -1,3 +1,7 @@
+import { MATCH_UPDATE_EVENT_NAME } from './../constants';
+import { Group } from './../../../models/group.model';
+import { League } from './../../../models/league.model';
+import { Match } from './../../../models/match.model';
 import { Subject } from 'rxjs/Subject';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -18,17 +22,24 @@ export class TournamentEditorComponent implements OnInit {
 
   tournament$ : Observable<Tournament>;
   tournamentUpdated$ : Observable<Tournament>;
+  matchUpdated$:Observable<Tournament>;
   tournamentNamedChanged$ : Subject<string> = new Subject<string>();
   tournamentId : number;
+  allMatches$ : Observable<Match[]>;
 
   constructor(private tournamentService: TournamentService, private route: ActivatedRoute, private element : ElementRef) { }
 
   ngOnInit() {
 
-    this.tournamentUpdated$ = this.tournamentNamedChanged$.pipe(
+    this.tournamentUpdated$ = merge(this.tournamentNamedChanged$.pipe(
       debounceTime(300),
       switchMap(name => this.tournamentService.update({id:this.tournamentId, name: name}))
-    );
+    ),
+    fromEvent(this.element.nativeElement, MATCH_UPDATE_EVENT_NAME).pipe(
+      debounceTime(300),
+      map((event : CustomEvent) => event.detail),
+      switchMap( (match : Match) => { return this.tournamentService.updateMatch(match)})
+    ));
 
     this.tournament$ = merge(this.tournamentUpdated$,this.route.params.pipe(
       map(params => params['id']),
@@ -42,6 +53,17 @@ export class TournamentEditorComponent implements OnInit {
       tap( tournament => this.tournamentId = tournament.id)
       ));
 
+      this.allMatches$ = this.tournament$.pipe(
+        map((tournament : Tournament) => {
+          return tournament.leagues.reduce((acc: Match[],league: League) => {
+            league.groups.forEach((group: Group) => {
+              group.matches.forEach(match => acc = [... acc, match]);
+            });
+            return acc;
+          },[])
+        })
+      )
+
 
   }
 
@@ -49,6 +71,8 @@ export class TournamentEditorComponent implements OnInit {
     this.tournamentNamedChanged$.next(event);
   }
 
-
+ trackLeague(league: League){
+   return league.id;
+ }
 
 }

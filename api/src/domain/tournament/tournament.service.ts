@@ -1,3 +1,4 @@
+import { HOME_TEAM_WINS, OUT_TEAM_WINS } from './../../constants';
 import { Tournament } from './../entities/tournament.entity';
 import { GroupMatch } from './../entities/match.entity';
 import { Team } from './../entities/team.entity';
@@ -7,11 +8,10 @@ import { League } from './../entities/league.entity';
 import { AuthService } from 'auth/auth.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tournament } from '../entities/tournament.entity';
 import { Repository, DeleteResult } from 'typeorm';
 import { from, Observable } from 'rxjs';
 import { User } from 'domain/entities/user.entity';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { Match } from 'domain/entities/match.entity';
 
 @Injectable()
@@ -23,7 +23,9 @@ export class TournamentService {
   ) {}
 
   findOne(tournament: any): Observable<Tournament> {
-    return from(this.tournamentRepository.findOne(tournament));
+    return from(this.tournamentRepository.findOne(tournament)).pipe(
+      map((tournament: Tournament) => this.processMatches(tournament))
+    );
   }
 
   find(tournament: any): Observable<Tournament[]> {
@@ -42,6 +44,12 @@ export class TournamentService {
 
   delete(id: number) : Observable<DeleteResult> {
     return from(this.tournamentRepository.delete(id));
+  }
+
+  findByMatch(match: Match) : Observable<Tournament> {
+    return from(this.tournamentRepository.findOne({leagues: [{ groups: [ {matches : [match]}]}]})).pipe(
+      map((tournament: Tournament) => this.processMatches(tournament))
+    );
   }
 
   createNew(userId: number): Tournament {
@@ -83,15 +91,17 @@ export class TournamentService {
         group.teams.push(team);
       });
 
+      let startGroupMacthNR = (index*6)+1;
+
       group.matches = [];
-      group.matches.push(new GroupMatch(group.teams[0], group.teams[1]));
-      group.matches.push(new GroupMatch(group.teams[2], group.teams[3]));
+      group.matches.push(new GroupMatch(group.teams[0], group.teams[1], startGroupMacthNR++));
+      group.matches.push(new GroupMatch(group.teams[2], group.teams[3],startGroupMacthNR++));
 
-      group.matches.push(new GroupMatch(group.teams[0], group.teams[2]));
-      group.matches.push(new GroupMatch(group.teams[3], group.teams[1]));
+      group.matches.push(new GroupMatch(group.teams[0], group.teams[2], startGroupMacthNR++));
+      group.matches.push(new GroupMatch(group.teams[3], group.teams[1], startGroupMacthNR++));
 
-      group.matches.push(new GroupMatch(group.teams[3], group.teams[0]));
-      group.matches.push(new GroupMatch(group.teams[1], group.teams[2]));
+      group.matches.push(new GroupMatch(group.teams[3], group.teams[0], startGroupMacthNR++));
+      group.matches.push(new GroupMatch(group.teams[1], group.teams[2], startGroupMacthNR++));
 
       if(!tour.leagues[0].groups){
         tour.leagues[0].groups = [];
@@ -100,6 +110,38 @@ export class TournamentService {
     });
 
     return tour;
+
+  }
+
+  processMatches(tournament: Tournament) : Tournament {
+    const returnVal = {... tournament} as Tournament;
+
+    returnVal.leagues.forEach((league: League) => {
+      league.groups.forEach((group: Group) => {
+        group.matches.forEach((match: Match) => {
+          if(match.homeTeamScore !== undefined && match.homeTeamScore !== null && match.outTeamScore !== undefined && match.outTeamScore !== null){
+            const homeTeam = group.getTeamById(match.homeTeam.id);
+            const outTeam = group.getTeamById(match.outTeam.id);
+            homeTeam.matchesPlayed++;
+            outTeam.matchesPlayed++;
+
+            if(match.getOutCome() === HOME_TEAM_WINS){
+              homeTeam.matchesWon++;
+              outTeam.matchesLost++;
+            } else if(match.getOutCome() === OUT_TEAM_WINS){
+              homeTeam.matchesLost++;
+              outTeam.matchesWon++;
+            } else {
+              homeTeam.matchesDrawed++;
+              outTeam.matchesDrawed++;
+            }
+          }
+        });
+        group.teams.forEach((team:Team) => {team.points = 3*team.matchesWon + team.matchesDrawed})
+        });
+    });
+
+    return returnVal;
 
   }
 

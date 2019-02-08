@@ -1,3 +1,4 @@
+import { Group } from './../../../models/group.model';
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 
 @Component({
@@ -14,7 +15,11 @@ export class LeagueEditorComponent {
 
   leagueChanged(event){
     this.league.name = event;
-    this.element.nativeElement.dispatch(new CustomEvent('tour-changed', {bubbles: true}))
+    this.element.nativeElement.dispatchEvent(new CustomEvent('tour-changed', {bubbles: true}))
+  }
+
+  trackGroup(group: Group){
+    return group.id;
   }
 
 }

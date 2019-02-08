@@ -1,3 +1,5 @@
+import { Match } from 'domain/entities/match.entity';
+import { MatchService } from './match.service';
 import { LeagueService } from './league.service';
 import { League } from './../entities/league.entity';
 import { UpdateResult, DeleteResult } from 'typeorm';
@@ -22,7 +24,7 @@ import { User } from 'domain/entities/user.entity';
 
 @Controller('tournament')
 export class TournamentController {
-  constructor(private readonly tournamentService: TournamentService, private jwtService: JwtService, private leagueService: LeagueService) {}
+  constructor(private readonly tournamentService: TournamentService, private jwtService: JwtService, private leagueService: LeagueService, private matchService: MatchService) {}
 
   @Get('/all')
   findByUser(@Req() request: any) : Observable<Tournament[]> {
@@ -45,6 +47,12 @@ export class TournamentController {
   @Put('/league')
   updateLeague(@Body() league : League) : Observable<Tournament> {
     return this.leagueService.update(league);
+  }
+
+  @Put('/match')
+  updateMatch(@Body() match : Match) : Observable<Tournament> {
+    console.log(match);
+    return this.matchService.update(match);
   }
 
   @Put()

@@ -1,3 +1,5 @@
+import { MatchService } from './tournament/match.service';
+import { Match } from 'domain/entities/match.entity';
 import { League } from './entities/league.entity';
 import { LeagueService } from './tournament/league.service';
 import { LoginMiddleware } from './login/login.middleware';
@@ -13,8 +15,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'auth/auth.module';
 import { AuthService } from 'auth/auth.service';
 @Module({
-  imports: [TypeOrmModule.forFeature([Tournament, User, League]), AuthModule],
-  providers: [ TournamentService, UserService, AuthService, LeagueService],
+  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match]), AuthModule],
+  providers: [ TournamentService, UserService, AuthService, LeagueService, MatchService],
   controllers: [TournamentController, UserController, LoginController],
 })
 export class DomainModule {

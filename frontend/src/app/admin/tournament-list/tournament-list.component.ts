@@ -1,3 +1,4 @@
+import { Match } from './../../../models/match.model';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { TournamentService } from '../services/tournament.service';
@@ -14,6 +15,7 @@ export class TournamentListComponent implements OnInit {
   tournaments$ :  Observable<any>
   deleteTournament$ : Subject<number> = new Subject<number>();
 
+
   constructor(private tournamentService: TournamentService) { }
 
   ngOnInit() {
@@ -24,6 +26,8 @@ export class TournamentListComponent implements OnInit {
         startWith(undefined),
         switchMap(_ =>  this.tournamentService.findAllForUser())
     );
+
+    
   }
 
   delete(id:  number){

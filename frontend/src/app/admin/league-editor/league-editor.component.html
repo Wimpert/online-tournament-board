@@ -1,3 +1,8 @@
 <h6>League</h6>
 <input type="text" [ngModel]="league.name" (ngModelChange)="leagueChanged($event)">
-<app-group-editor *ngFor="let group of league.groups" [group]="group" ></app-group-editor>
+<mat-tab-group mat-align-tabs="end" >
+  <mat-tab  *ngFor="let group of league.groups; trackBy trackGroup" label="{{group.name}}">
+      <app-group-editor  [group]="group" ></app-group-editor>
+  </mat-tab>
+</mat-tab-group>
+

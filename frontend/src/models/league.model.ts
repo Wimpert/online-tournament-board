@@ -1,5 +1,8 @@
+import { Group } from './group.model';
 export class League{
 
-  name:string
+  id:number;
+  name:string;
+  groups: Group[];
 
 }

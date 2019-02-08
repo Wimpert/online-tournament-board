@@ -6,5 +6,6 @@ export class Match{
   outTeam: Team;
   homeTeamScore: number;
   outTeamScore: number;
+  matchNr:number;
 
 }
