@@ -1,5 +1,49 @@
 <p>
   group: {{group .name}}
 </p>
-<app-team-editor *ngFor="let team of group.teams" [team]="team"></app-team-editor>
+<mat-table #table [dataSource]="group.teams">
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="points">
+    <mat-header-cell *matHeaderCellDef> P </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.points}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="matchesPlayed">
+    <mat-header-cell *matHeaderCellDef> MP </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.matchesPlayed}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="matchesWon">
+    <mat-header-cell *matHeaderCellDef> MW </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.matchesWon}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="matchesLost">
+    <mat-header-cell *matHeaderCellDef> MV  </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.matchesLost}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="matchesDrawed">
+    <mat-header-cell *matHeaderCellDef> MG </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.matchesDrawed}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="goalsScored">
+    <mat-header-cell *matHeaderCellDef> GS </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.goalsScored}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="goalsConcieved">
+    <mat-header-cell *matHeaderCellDef> GT </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.goalsConcieved}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
 <app-match-editor *ngFor="let match of group.matches" [match]="match"></app-match-editor>

@@ -1,8 +1,11 @@
 <div *ngIf="match">
   <span>{{match.matchNr}}</span>
-  <span>{{match.homeTeam.name}}</span>
-  <input type="number" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
+  <label for="{{match.id}}.homeTeamScore">{{match.homeTeam.name}}</label>
+  <input type="number" id="{{match.id}}.homeTeamScore" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
   -
-  <input type="number" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
-  <span>{{match.outTeam.name}}</span>
+  <input type="number" id="{{match.id}}.outTeamScore" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
+  <label for="{{match.id}}.outTeamScore">{{match.outTeam.name}}</label>
+  <label>Terrain</label> <input id="{{match.id}}.terrain" type="number" [(ngModel)]="match.terrain" (ngModelChange)="matchChanged()">
+  <label>hour</label> <input type="number" id="{{match.id}}.hour" [(ngModel)]="match.hour" (ngModelChange)="matchChanged()">
+  <label>:</label> <input type="number" id="{{match.id}}.minutes" [(ngModel)]="match.minutes" (ngModelChange)="matchChanged()">
 </div>

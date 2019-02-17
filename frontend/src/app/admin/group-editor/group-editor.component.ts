@@ -9,10 +9,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class GroupEditorComponent implements OnInit {
 
   @Input() group: Group;
+  displayedColumns: string[] = [ 'name', 'points', 'matchesPlayed', 'matchesWon', 'matchesLost', 'goalsScored', 'goalsConcieved'];
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
 
 }
