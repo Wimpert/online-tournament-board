@@ -12,6 +12,7 @@ import { GroupEditorComponent } from './group-editor/group-editor.component';
 import { TeamEditorComponent } from './team-editor/team-editor.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { QuickMatchEditorComponent } from './quick-match-editor/quick-match-editor.component';
+import { RoundEditorComponent } from './round-editor/round-editor.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { QuickMatchEditorComponent } from './quick-match-editor/quick-match-edit
     MatTableModule
   ],
   declarations: [TournamentListComponent, TournamentEditorComponent, LeagueEditorComponent,
-     GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent],
+     GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent],
   providers: [TournamentService]
 })
 export class AdminModule { }

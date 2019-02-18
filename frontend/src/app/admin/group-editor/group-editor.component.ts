@@ -1,5 +1,6 @@
 import { Group } from './../../../models/group.model';
 import { Component, OnInit, Input } from '@angular/core';
+import { group } from '@angular/core/src/animation/dsl';
 
 @Component({
   selector: 'app-group-editor',

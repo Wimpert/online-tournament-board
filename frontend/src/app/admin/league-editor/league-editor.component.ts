@@ -8,18 +8,20 @@ import { Component, OnInit, Input, ElementRef } from '@angular/core';
 })
 export class LeagueEditorComponent {
 
-  @Input() league : any;
+  @Input() league: any;
 
-  constructor(private element : ElementRef) { }
+  constructor(private element: ElementRef) { }
 
 
-  leagueChanged(event){
+  leagueChanged(event) {
     this.league.name = event;
-    this.element.nativeElement.dispatchEvent(new CustomEvent('tour-changed', {bubbles: true}))
+    this.element.nativeElement.dispatchEvent(new CustomEvent('tour-changed', {bubbles: true}));
   }
 
-  trackGroup(group: Group){
-    return group.id;
+
+
+  track(item: {id: number}) {
+    return item.id;
   }
 
 }
