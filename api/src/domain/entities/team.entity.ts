@@ -25,5 +25,7 @@ export class Team{
   matchesLost : number = 0;
   matchesDrawed : number = 0;
   points: number = 0;
+  goalsScored: number = 0;
+  goalsConcieved: number = 0;
 
 }
