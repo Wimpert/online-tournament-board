@@ -52,8 +52,25 @@ export class TournamentController {
 
   @Put('/match')
   updateMatch(@Body() match: Match): Observable<Tournament> {
-    console.log(match);
     return this.matchService.update(match);
+  }
+
+  @Put('/addToKnockoutRound/:id')
+  addToKnockoutRound(@Param('id') leagueId: number): Observable<Tournament> {
+    return this.tournamentService.findOne({leagues: [{id: leagueId}]}).pipe(
+      map((tournament: Tournament) => this.tournamentService.processMatches(tournament)),
+      tap((tournament: Tournament) =>  {
+        const leagueToProcess = tournament.leagues.find(league =>  {
+
+          return league.id === Number(leagueId);
+        });
+        if (leagueToProcess){
+          this.tournamentService.addToNextRound(leagueToProcess);
+        }
+
+      }),
+      switchMap((tournament: Tournament) => this.tournamentService.save(tournament)),
+    );
   }
 
   @Put()

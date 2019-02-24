@@ -9,7 +9,7 @@ import { Tournament } from './tournament.entity';
 
 @Entity()
 export class Group{
-  
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,15 +19,24 @@ export class Group{
   @ManyToOne(type => League, league => league.groups)
   league: League;
 
-  @OneToMany(type => Team, team => team.group , {cascade:true, eager: true})
-  teams: Team[]
+  @OneToMany(type => Team, team => team.group , {cascade: true, eager: true})
+  teams: Team[];
 
-  @OneToMany(type => GroupMatch, match => match.group , {cascade:true, eager: true})
-  matches: GroupMatch[]
+  @OneToMany(type => GroupMatch, match => match.group , {cascade: true, eager: true})
+  matches: GroupMatch[];
 
   getTeamById(id: number){
     return this.teams.find((team: Team) => team.id === id);
   }
 
+  private _allMatchesPlayed: boolean;
+
+  get allMatchesPlayed(): boolean{
+    return this._allMatchesPlayed;
+  }
+
+  set allMatchesPlayed(played: boolean){
+    this._allMatchesPlayed = played;
+  }
 
 }

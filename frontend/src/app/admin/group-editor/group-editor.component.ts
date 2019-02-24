@@ -1,20 +1,27 @@
 import { Group } from './../../../models/group.model';
-import { Component, OnInit, Input } from '@angular/core';
-import { group } from '@angular/core/src/animation/dsl';
+import { Component, Input, OnChanges } from '@angular/core';
+import { TournamentService } from '../services/tournament.service';
 
 @Component({
   selector: 'app-group-editor',
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss']
 })
-export class GroupEditorComponent implements OnInit {
+export class GroupEditorComponent implements OnChanges {
 
   @Input() group: Group;
   displayedColumns: string[] = [ 'name', 'points', 'matchesPlayed', 'matchesWon', 'matchesLost', 'goalsScored', 'goalsConcieved'];
 
-  constructor() { }
+  constructor(private tournamentService: TournamentService) { }
 
-  ngOnInit() {}
+  ngOnChanges() {
+    if (this.group) {
+      this.group = {
+      ... this.group, teams: [... this.group.teams].sort((a, b) => this.tournamentService.compareTeams(a, b))
+    };
+    }
+
+  }
 
 
 }

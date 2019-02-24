@@ -1,6 +1,6 @@
 import { HOME_TEAM_WINS, OUT_TEAM_WINS } from './../../constants';
 import { Tournament } from './../entities/tournament.entity';
-import { GroupMatch } from './../entities/match.entity';
+import { GroupMatch, RoundMatch } from './../entities/match.entity';
 import { Team } from './../entities/team.entity';
 import { Group } from './../entities/group.entity';
 import { League } from './../entities/league.entity';
@@ -11,7 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
 import { from, Observable } from 'rxjs';
 import { User } from 'domain/entities/user.entity';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { Match } from 'domain/entities/match.entity';
 
 import {setHours, setMinutes, addMinutes, getHours, getMinutes, addHours} from 'date-fns';
@@ -26,8 +26,17 @@ export class TournamentService {
   ) {}
 
   findOne(tournament: any): Observable<Tournament> {
+    console.time('find');
     return from(this.tournamentRepository.findOne(tournament)).pipe(
+      tap(_ => {
+        console.log(_);
+        console.timeEnd('find');
+      }),
       map((tournament: Tournament) => this.processMatches(tournament)),
+      map((tournament: Tournament) => {
+        // tournament.leagues.teams.sort((teamA, teamB) => this.compareTeams(teamA, teamB));
+        return tournament;
+      }),
     );
   }
 
@@ -81,6 +90,8 @@ export class TournamentService {
       {name: 'Vrouwen', groups : []} as League,
     ];
 
+    let matchNR: number;
+
     allTeams.forEach((teamNames, groupIndex) => {
        const group = new Group();
        group.name = groupLetter[groupIndex];
@@ -93,7 +104,7 @@ export class TournamentService {
         group.teams.push(team);
       });
 
-       let startGroupMacthNR = (groupIndex * 6) + 1;
+       matchNR = (groupIndex * 6) + 1;
 
        const tourDate = new Date(2019, 5, 4);
        let startDateTime = setMinutes(setHours(tourDate, 9), 0);
@@ -109,21 +120,21 @@ export class TournamentService {
 
        group.matches = [];
        group.matches.push(new GroupMatch(group.teams[0], group.teams[1],
-        startGroupMacthNR++, terrain, getHours(startDateTime), getMinutes(startDateTime)));
+        matchNR++, terrain, getHours(startDateTime), getMinutes(startDateTime)));
        group.matches.push(new GroupMatch(group.teams[2], group.teams[3],
-        startGroupMacthNR++, terrain + 1 , getHours(startDateTime), getMinutes(startDateTime)));
+        matchNR++, terrain + 1 , getHours(startDateTime), getMinutes(startDateTime)));
        startDateTime = addHours(startDateTime, 1);
 
        group.matches.push(new GroupMatch(group.teams[0], group.teams[2],
-        startGroupMacthNR++, terrain, getHours(startDateTime), getMinutes(startDateTime)));
+        matchNR++, terrain, getHours(startDateTime), getMinutes(startDateTime)));
        group.matches.push(new GroupMatch(group.teams[3], group.teams[1],
-        startGroupMacthNR++, terrain + 1 , getHours(startDateTime), getMinutes(startDateTime)));
+        matchNR++, terrain + 1 , getHours(startDateTime), getMinutes(startDateTime)));
        startDateTime = addHours(startDateTime, 1);
 
        group.matches.push(new GroupMatch(group.teams[3], group.teams[0],
-        startGroupMacthNR++, terrain, getHours(startDateTime), getMinutes(startDateTime)));
+        matchNR++, terrain, getHours(startDateTime), getMinutes(startDateTime)));
        group.matches.push(new GroupMatch(group.teams[1], group.teams[2],
-        startGroupMacthNR++, terrain + 1 , getHours(startDateTime), getMinutes(startDateTime)));
+        matchNR++, terrain + 1 , getHours(startDateTime), getMinutes(startDateTime)));
        startDateTime = addHours(startDateTime, 1);
 
        if (!tour.leagues[0].groups){
@@ -139,6 +150,13 @@ export class TournamentService {
           tour.leagues[0].rounds = [];
         }
         tour.leagues[0].rounds.push(new Round(roundName));
+        tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches = [];
+
+        let i = 0;
+        while (i < 16){
+          tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches.push(new RoundMatch(undefined, undefined, matchNR++, 3, 10, 20));
+          i++;
+        }
 
     });
 
@@ -151,6 +169,8 @@ export class TournamentService {
 
     returnVal.leagues.forEach((league: League) => {
       league.groups.forEach((group: Group) => {
+        group.teams.forEach((team: Team) => team.reset());
+        group.allMatchesPlayed = true;
         group.matches.forEach((match: Match) => {
           if (match.homeTeamScore !== undefined && match.homeTeamScore !== null && match.outTeamScore !== undefined && match.outTeamScore !== null){
             const homeTeam = group.getTeamById(match.homeTeam.id);
@@ -172,13 +192,71 @@ export class TournamentService {
             outTeam.goalsConcieved += match.homeTeamScore;
             homeTeam.goalsScored += match.homeTeamScore;
             homeTeam.goalsConcieved += match.outTeamScore;
+          } else {
+            group.allMatchesPlayed = false;
           }
         });
         group.teams.forEach((team: Team) => {team.points = 3 * team.matchesWon + team.matchesDrawed; });
         });
     });
-
     return returnVal;
+
+  }
+
+  compareTeams(teama: Team, teamb: Team): number {
+
+    if (teama.points !== teamb.points) {
+        // compare on points:
+        return teamb.points - teama.points;
+    } else if (teama.matchesWon !== teamb.matchesWon) {
+        // on matchesWon :
+        return teamb.matchesWon - teama.matchesWon;
+    } else if (teama.goalsScored !== teamb.goalsScored) {
+        // on goals scored:
+        return teamb.goalsScored - teama.goalsScored;
+    } else if (teama.goalsConcieved !== teamb.goalsConcieved) {
+        // compare on goal diff:
+        return teamb.goalsConcieved - teama.goalsConcieved;
+    }
+    //  else if (teama.internalIndex !== teamb.internalIndex) {
+    //     // compare on goal diff:
+    //     return teamb.internalIndex - teama.internalIndex;
+    // }
+    return 0;
+}
+
+  addToNextRound(league: League) {
+
+    const achsteFinales =  league.rounds[0];
+
+    league.groups.forEach((group: Group, groupIndex) => {
+
+      if (group.allMatchesPlayed) {
+
+        const startIndex = this.getMatchIndexForNextRound(groupIndex);
+
+        if (groupIndex % 2 === 0) {
+          achsteFinales.matches[startIndex].homeTeam = league.groups[groupIndex].teams[0];
+          achsteFinales.matches[startIndex + 4].outTeam = league.groups[groupIndex].teams[1];
+          achsteFinales.matches[startIndex + 8].homeTeam = league.groups[groupIndex].teams[2];
+          achsteFinales.matches[startIndex + 12].outTeam = league.groups[groupIndex].teams[3];
+        } else {
+          achsteFinales.matches[startIndex + 4].homeTeam = league.groups[groupIndex].teams[0];
+          achsteFinales.matches[startIndex].outTeam = league.groups[groupIndex].teams[1];
+          achsteFinales.matches[startIndex + 12].homeTeam = league.groups[groupIndex].teams[2];
+          achsteFinales.matches[startIndex + 8].outTeam = league.groups[groupIndex].teams[3];
+        }
+      }
+    });
+  }
+
+  private getMatchIndexForNextRound(groupIndex: number) {
+
+    if (groupIndex % 2 === 0) {
+        return groupIndex / 2;
+    } else {
+      return (groupIndex - 1) / 2;
+    }
 
   }
 

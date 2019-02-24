@@ -1,8 +1,10 @@
 import { Group } from './group.model';
-export class League{
+import { Round } from './round.model';
+export class League {
 
-  id:number;
-  name:string;
+  id: number;
+  name: string;
   groups: Group[];
+  rounds: Round[];
 
 }

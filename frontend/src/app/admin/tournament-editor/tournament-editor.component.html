@@ -7,9 +7,10 @@
     </div>
     <mat-tab-group mat-align-tabs="end" >
       <mat-tab  *ngFor="let league of tournament.leagues; trackBy: trackLeague" label="{{league.name}}">
-        <app-league-editor [league]="league"></app-league-editor>
+        <app-league-editor (addTeamsToKnockRound)="handleAddTeamToKnockOutRoundEvent($event)" [league]="league"></app-league-editor>
       </mat-tab>
     </mat-tab-group>
-  </div>
+</div>
+
 
 

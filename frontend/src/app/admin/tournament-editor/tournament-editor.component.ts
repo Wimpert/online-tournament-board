@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { Tournament } from '../../../models/tournament.model';
 import { TournamentService } from '../services/tournament.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, map, tap, debounceTime } from 'rxjs/operators';
+import { switchMap, map, tap, debounceTime, shareReplay, share } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
@@ -20,59 +20,72 @@ import { merge } from 'rxjs/observable/merge';
 })
 export class TournamentEditorComponent implements OnInit {
 
-  tournament$ : Observable<Tournament>;
-  tournamentUpdated$ : Observable<Tournament>;
-  matchUpdated$:Observable<Tournament>;
-  tournamentNamedChanged$ : Subject<string> = new Subject<string>();
-  tournamentId : number;
-  allMatches$ : Observable<Match[]>;
+  tournament$: Observable<Tournament>;
+  tournamentUpdated$: Observable<Tournament>;
+  matchUpdated$: Observable<Tournament>;
+  tournamentNamedChanged$: Subject<string> = new Subject<string>();
+  tournamentId: number;
+  allMatches$: Observable<Match[]>;
 
-  constructor(private tournamentService: TournamentService, private route: ActivatedRoute, private element : ElementRef) { }
+  addTeamToKnockoutRound: Subject<number> = new Subject<number>();
+
+  constructor(private tournamentService: TournamentService, private route: ActivatedRoute, private element: ElementRef) { }
 
   ngOnInit() {
 
     this.tournamentUpdated$ = merge(this.tournamentNamedChanged$.pipe(
+
       debounceTime(300),
-      switchMap(name => this.tournamentService.update({id:this.tournamentId, name: name}))
+      switchMap(name => this.tournamentService.update({id: this.tournamentId, name: name}))
     ),
     fromEvent(this.element.nativeElement, MATCH_UPDATE_EVENT_NAME).pipe(
-      debounceTime(300),
-      map((event : CustomEvent) => event.detail),
-      switchMap( (match : Match) => { return this.tournamentService.updateMatch(match)})
-    ));
+      debounceTime(1000),
+      map((event: CustomEvent) => event.detail),
+      switchMap( (match: Match) => this.tournamentService.updateMatch(match))
+    ),
+    this.addTeamToKnockoutRound.pipe(
+      switchMap((leagueId: number) => this.tournamentService.addTeamsToKnockoutRound(leagueId))
+    )
+    ).pipe(shareReplay());
 
-    this.tournament$ = merge(this.tournamentUpdated$,this.route.params.pipe(
+    this.tournament$ = merge(this.tournamentUpdated$, this.route.params.pipe(
       map(params => params['id']),
       switchMap(id => {
-        if(id === undefined){
+        if (id === undefined) {
           return this.tournamentService.createNew();
 
         }
         return this.tournamentService.findById(id);
       }),
-      tap( tournament => this.tournamentId = tournament.id)
+      shareReplay()
       ));
 
       this.allMatches$ = this.tournament$.pipe(
-        map((tournament : Tournament) => {
-          return tournament.leagues.reduce((acc: Match[],league: League) => {
+        map((tournament: Tournament) => {
+          return tournament.leagues.reduce((acc: Match[], league: League) => {
             league.groups.forEach((group: Group) => {
               group.matches.forEach(match => acc = [... acc, match]);
             });
             return acc;
-          },[])
+          }, []);
         })
-      )
+      );
 
 
   }
 
-  tournamentChanged(event: string){
+  tournamentChanged(event: string) {
     this.tournamentNamedChanged$.next(event);
   }
 
- trackLeague(league: League){
+ trackLeague(league: League) {
    return league.id;
  }
+
+
+ handleAddTeamToKnockOutRoundEvent(league: League) {
+   this.addTeamToKnockoutRound.next(league.id);
+ }
+
 
 }

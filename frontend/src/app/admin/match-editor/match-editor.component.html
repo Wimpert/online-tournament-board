@@ -1,11 +1,11 @@
 <div *ngIf="match">
   <span>{{match.matchNr}}</span>
-  <label for="{{match.id}}.homeTeamScore">{{match.homeTeam.name}}</label>
-  <input type="number" id="{{match.id}}.homeTeamScore" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
+  <label class="name-container" for="{{match.id}}.homeTeamScore">{{match.homeTeam?.name}}</label>
+  <input type="text" class="number-box" id="{{match.id}}.homeTeamScore" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
   -
-  <input type="number" id="{{match.id}}.outTeamScore" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
-  <label for="{{match.id}}.outTeamScore">{{match.outTeam.name}}</label>
-  <label>Terrain</label> <input id="{{match.id}}.terrain" type="number" [(ngModel)]="match.terrain" (ngModelChange)="matchChanged()">
-  <label>hour</label> <input type="number" id="{{match.id}}.hour" [(ngModel)]="match.hour" (ngModelChange)="matchChanged()">
-  <label>:</label> <input type="number" id="{{match.id}}.minutes" [(ngModel)]="match.minutes" (ngModelChange)="matchChanged()">
+  <input type="text" id="{{match.id}}.outTeamScore" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
+  <label class="name-container" for="{{match.id}}.outTeamScore">{{match.outTeam?.name}}</label>
+  <label>Terrain</label> <input class="number-box" id="{{match.id}}.terrain" type="number" [(ngModel)]="match.terrain" (ngModelChange)="matchChanged()">
+  <label>hour</label> <input type="text" class="number-box" id="{{match.id}}.hour" [(ngModel)]="match.hour" (ngModelChange)="matchChanged()">
+  <label>:</label> <input type="text" class="number-box" id="{{match.id}}.minutes" [(ngModel)]="match.minutes" (ngModelChange)="matchChanged()">
 </div>

@@ -1,13 +1,42 @@
 <h6>League</h6>
 <input type="text" [ngModel]="league.name" (ngModelChange)="leagueChanged($event)">
-<mat-tab-group mat-align-tabs="end" >
-  <mat-tab  *ngFor="let group of league.groups; trackBy track" label="{{group.name}}">
-      <app-group-editor  [group]="group" ></app-group-editor>
-  </mat-tab>
-</mat-tab-group>
-<mat-tab-group mat-align-tabs="end" >
-  <mat-tab  *ngFor="let round of league.rounds; trackBy track" label="{{round.name}}">
-     <app-round-editor [round]="round"></app-round-editor>
-  </mat-tab>
-</mat-tab-group>
+<button (click)="addToNextRound()">Add To Achste Finales</button>
+<mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Groups
+        </mat-panel-title>
+        <mat-panel-description>
+
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-tab-group mat-align-tabs="end" >
+          <mat-tab  *ngFor="let group of league.groups; trackBy track" label="{{group.name}}">
+              <app-group-editor  [group]="group" ></app-group-editor>
+          </mat-tab>
+        </mat-tab-group>
+
+
+    </mat-expansion-panel>
+    <mat-expansion-panel >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Rounds
+        </mat-panel-title>
+        <mat-panel-description>
+
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-tab-group mat-align-tabs="end" >
+          <mat-tab  *ngFor="let round of league.rounds; trackBy track" label="{{round.name}}">
+             <app-round-editor [round]="round"></app-round-editor>
+          </mat-tab>
+        </mat-tab-group>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
 

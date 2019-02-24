@@ -3,6 +3,7 @@ import { Group } from './group.entity';
 import { Round } from './round.entity';
 import { Team } from './team.entity';
 import { ManyToOne, Column, Entity, TableInheritance, ChildEntity, PrimaryGeneratedColumn } from 'typeorm';
+import { Referee } from './referee.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -11,16 +12,16 @@ export abstract class Match{
 @PrimaryGeneratedColumn()
   id: number;
 
-@ManyToOne(type => Team, team => team.homeMatches, {cascade: true, eager: true})
+@ManyToOne(type => Team, team => team.homeMatches, {cascade: true, eager: true, nullable: true})
 homeTeam: Team;
 
-@ManyToOne(type => Team, team => team.outMatches, {cascade: true, eager: true})
+@ManyToOne(type => Team, team => team.outMatches, {cascade: true, eager: true, nullable: true})
 outTeam: Team;
 
-@Column()
+@Column({nullable: true})
 homeTeamScore: number;
 
-@Column()
+@Column({nullable: true})
 outTeamScore: number;
 
 @Column()
@@ -34,6 +35,9 @@ minutes: number;
 
 @Column()
 terrain: number;
+
+@ManyToOne(type => Referee, referee => referee.matches, {cascade: false, eager: true, nullable: true})
+referee: Referee;
 
 getOutCome(): number {
   if (this.homeTeamScore > this.outTeamScore){
@@ -76,10 +80,10 @@ export class RoundMatch extends Match{
         this.minutes = minutes;
       }
 
-      @Column()
+      @Column({nullable: true})
       homeTeamPenaltyScore: number;
 
-      @Column()
+      @Column({nullable: true})
       outTeamPenaltyScore: number;
 
   @ManyToOne(type => Round, round => round.matches)

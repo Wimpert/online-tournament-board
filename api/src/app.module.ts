@@ -20,19 +20,20 @@ import { CookieParserMiddleware } from '@nest-middlewares/cookie-parser';
       password: process.env.DB_PASSWD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
-      logging: true
+      synchronize: true,
+      dropSchema: false,
+      logging: true,
     }),
-    DomainModule
+    DomainModule,
   ],
 })
 export class AppModule implements NestModule {
-  configure(consumer : MiddlewareConsumer){
+  configure(consumer: MiddlewareConsumer){
     consumer.apply(CookieParserMiddleware).forRoutes(
-      { path: '*', method: RequestMethod.ALL }
+      { path: '*', method: RequestMethod.ALL },
     ).apply(AuthMiddleware)
     .forRoutes(
-      { path: '*', method: RequestMethod.ALL }
+      { path: '*', method: RequestMethod.ALL },
     );
 }
 }

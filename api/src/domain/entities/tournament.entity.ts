@@ -15,7 +15,7 @@ export class Tournament extends AbstractEntity {
   @ManyToOne(type => User, user => user.tournaments )
   user: User;
 
-  @OneToMany(type => League, league => league.tournament, {cascade:true, eager: true, onDelete: 'CASCADE'})
+  @OneToMany(type => League, league => league.tournament, {cascade: true, eager: true, onDelete: 'CASCADE'})
   leagues: League[];
 
 }
