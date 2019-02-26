@@ -1,4 +1,3 @@
-import { League } from '../entities/league.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -14,5 +13,9 @@ export class GroupService {
 
   save(group: any): Observable<any> {
     return from(this.groupRepository.save(group));
+  }
+
+  remove(group: any): Observable<any> {
+    return from(this.groupRepository.delete(group));
   }
 }

@@ -68,6 +68,18 @@ export class TournamentService {
     );
   }
 
+  findByGroup(group: Group): Observable<Tournament> {
+    return from(this.tournamentRepository.findOne({leagues: [{ groups: [ group]}]})).pipe(
+      map((tournament: Tournament) => this.processMatches(tournament)),
+    );
+  }
+
+  findByTeam(team: Team): Observable<Tournament> {
+    return from(this.tournamentRepository.findOne({leagues: [{ groups: [ {teams : [team]}]}]})).pipe(
+      map((tournament: Tournament) => this.processMatches(tournament)),
+    );
+  }
+
   createNew(userId: number): Tournament {
 
     const allTeams =  [

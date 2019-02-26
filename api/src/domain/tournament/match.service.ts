@@ -12,13 +12,11 @@ export class MatchService {
   constructor(
     @InjectRepository(Match)
     private readonly matchRepository: Repository<Match>,
-    private tournamentService: TournamentService
+    private tournamentService: TournamentService,
   ) {}
 
-  update(match: any) : Observable<Tournament> {
-    return from(this.matchRepository.update({id: match.id}, match)).pipe(
-        switchMap( _ => this.findTournamentByMatch({id:match.id}))
-    );
+  update(match: any): Observable<UpdateResult> {
+    return from(this.matchRepository.update({id: match.id}, match));
   }
 
   findTournamentByMatch(match: any): Observable<Tournament> {

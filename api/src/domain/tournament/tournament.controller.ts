@@ -1,3 +1,5 @@
+import { TeamService } from './team.service.';
+import { Team } from './../entities/team.entity';
 import { GroupService } from './group.service';
 import { Group } from './../entities/group.entity';
 import { Match } from 'domain/entities/match.entity';
@@ -21,13 +23,14 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs/operators';
-import { create } from 'domain';
-import { User } from 'domain/entities/user.entity';
 
 @Controller('tournament')
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService, private jwtService: JwtService,
-              private leagueService: LeagueService, private matchService: MatchService, private groupService: GroupService) {}
+              private leagueService: LeagueService,
+              private matchService: MatchService,
+              private groupService: GroupService,
+              private teamService: TeamService) {}
 
   @Get('/all')
   findByUser(@Req() request: any): Observable<Tournament[]> {
@@ -54,7 +57,23 @@ export class TournamentController {
 
   @Put('/match')
   updateMatch(@Body() match: Match): Observable<Tournament> {
-    return this.matchService.update(match);
+    return this.matchService.update(match).pipe(
+      switchMap(_ => this.tournamentService.findByMatch(match)),
+    );
+  }
+
+  @Put('/team')
+  updateTeam(@Body() team: Team): Observable<Tournament> {
+    return this.teamService.save(team).pipe(
+      switchMap(_ => this.tournamentService.findByTeam(team)),
+    );
+  }
+
+  @Put('/group')
+  updateGroup(@Body() group: Group): Observable<Tournament> {
+    return this.groupService.save(group).pipe(
+      switchMap(_ => this.tournamentService.findByGroup(group)),
+    );
   }
 
   @Put('/addToKnockoutRound/:id')
@@ -75,14 +94,26 @@ export class TournamentController {
     );
   }
 
-  @Put('/addGroup/leagueId/:leagueId')
-  addGroupToLeague(@Param('id') leagueId: number){
+  @Post('/addGroup/leagueId/:leagueId')
+  addGroupToLeague(@Param('leagueId') leagueId: number){
     const group = new Group();
     group.league = {id: leagueId} as League;
     group.name = new Date().toString();
 
     return this.groupService.save(group).pipe(
       switchMap(_ =>  this.tournamentService.findOne({leagues: [{id: leagueId}]}).pipe(
+        map((tournament: Tournament) => this.tournamentService.processMatches(tournament))),
+    ));
+  }
+
+  @Post('/addTeam/groupId/:groupId')
+  addTeamToGroup(@Param('groupId') groupId: number){
+    const team = new Team();
+    team.group = {id: groupId} as Group;
+    team.name = new Date().toString();
+
+    return this.teamService.save(team).pipe(
+      switchMap(_ =>  this.tournamentService.findOne({groups: [{id: groupId}]}).pipe(
         map((tournament: Tournament) => this.tournamentService.processMatches(tournament))),
     ));
   }
@@ -106,4 +137,13 @@ export class TournamentController {
    );
   }
 
+  @Delete('/team/:teamId')
+  deleteTeam(@Param('teamId') teamId): Observable<DeleteResult> {
+   return this.teamService.remove({id: teamId});
+  }
+
+  @Delete('/group/:groupId')
+  deleteGroup(@Param('groupId') groupId): Observable<DeleteResult> {
+   return this.groupService.remove({id: groupId});
+  }
 }
