@@ -47,6 +47,10 @@ export class TournamentService {
     return this.httpClient.put<Tournament>(`${this.url}/addToKnockoutRound/${leagueId}`, undefined , {withCredentials: true});
   }
 
+  addGroup(leagueId: number) {
+    return this.httpClient.post<Tournament>(`${this.url}/addGroup/leagueId/${leagueId}`, undefined, {withCredentials: true});
+  }
+
   compareTeams(teama: Team, teamb: Team): number {
 
     if (teama.points !== teamb.points) {

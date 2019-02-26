@@ -1,3 +1,5 @@
+import { GroupService } from './group.service';
+import { Group } from './../entities/group.entity';
 import { Match } from 'domain/entities/match.entity';
 import { MatchService } from './match.service';
 import { LeagueService } from './league.service';
@@ -25,7 +27,7 @@ import { User } from 'domain/entities/user.entity';
 @Controller('tournament')
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService, private jwtService: JwtService,
-              private leagueService: LeagueService, private matchService: MatchService) {}
+              private leagueService: LeagueService, private matchService: MatchService, private groupService: GroupService) {}
 
   @Get('/all')
   findByUser(@Req() request: any): Observable<Tournament[]> {
@@ -71,6 +73,18 @@ export class TournamentController {
       }),
       switchMap((tournament: Tournament) => this.tournamentService.save(tournament)),
     );
+  }
+
+  @Put('/addGroup/leagueId/:leagueId')
+  addGroupToLeague(@Param('id') leagueId: number){
+    const group = new Group();
+    group.league = {id: leagueId} as League;
+    group.name = new Date().toString();
+
+    return this.groupService.save(group).pipe(
+      switchMap(_ =>  this.tournamentService.findOne({leagues: [{id: leagueId}]}).pipe(
+        map((tournament: Tournament) => this.tournamentService.processMatches(tournament))),
+    ));
   }
 
   @Put()

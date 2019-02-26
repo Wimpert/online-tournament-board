@@ -1,14 +1,14 @@
 <h6>League</h6>
 <input type="text" [ngModel]="league.name" (ngModelChange)="leagueChanged($event)">
-<button (click)="addToNextRound()">Add To Achste Finales</button>
-<mat-accordion>
+<button (click)="addToNextRound()" mat-button color="primary" >Add To Achste Finales</button>
+<mat-accordion [multi]="true">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Groups
         </mat-panel-title>
         <mat-panel-description>
-
+          <button mat-button mat-button color="primary" (click)="addGroup($event)">Add Group</button>
         </mat-panel-description>
       </mat-expansion-panel-header>
 

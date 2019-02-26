@@ -11,6 +11,7 @@ export class LeagueEditorComponent {
 
   @Input() league: any;
   @Output() addTeamsToKnockRound: EventEmitter<League> = new EventEmitter<League>();
+  @Output() addGroup: EventEmitter<League> = new EventEmitter<League>();
 
   constructor(private element: ElementRef) { }
 
@@ -27,6 +28,11 @@ export class LeagueEditorComponent {
 
   addToNextRound() {
     this.addTeamsToKnockRound.emit(this.league);
+  }
+
+  addGroupHandler(event: MouseEvent) {
+    event.stopPropagation();
+    this.addGroup.emit(this.league);
   }
 
 

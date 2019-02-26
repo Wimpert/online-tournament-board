@@ -28,6 +28,7 @@ export class TournamentEditorComponent implements OnInit {
   allMatches$: Observable<Match[]>;
 
   addTeamToKnockoutRound: Subject<number> = new Subject<number>();
+  addGroupToLeague: Subject<number> = new Subject<number>();
 
   constructor(private tournamentService: TournamentService, private route: ActivatedRoute, private element: ElementRef) { }
 
@@ -45,7 +46,10 @@ export class TournamentEditorComponent implements OnInit {
     ),
     this.addTeamToKnockoutRound.pipe(
       switchMap((leagueId: number) => this.tournamentService.addTeamsToKnockoutRound(leagueId))
-    )
+    ),
+    this.addGroupToLeague.pipe(
+      switchMap((leagueId: number) => this.tournamentService.addGroup(leagueId))
+    ),
     ).pipe(shareReplay());
 
     this.tournament$ = merge(this.tournamentUpdated$, this.route.params.pipe(
@@ -85,6 +89,10 @@ export class TournamentEditorComponent implements OnInit {
 
  handleAddTeamToKnockOutRoundEvent(league: League) {
    this.addTeamToKnockoutRound.next(league.id);
+ }
+
+ handleAddGroupToLeagueEvent(league: League) {
+   this.addGroupToLeague.next(league.id);
  }
 
 

@@ -1,3 +1,4 @@
+import { Group } from 'domain/entities/group.entity';
 import { MatchService } from './tournament/match.service';
 import { Match } from 'domain/entities/match.entity';
 import { League } from './entities/league.entity';
@@ -15,12 +16,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'auth/auth.module';
 import { AuthService } from 'auth/auth.service';
 @Module({
-  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match]), AuthModule],
+  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match, Group]), AuthModule],
   providers: [ TournamentService, UserService, AuthService, LeagueService, MatchService],
   controllers: [TournamentController, UserController, LoginController],
 })
 export class DomainModule {
-  configure(consumer : MiddlewareConsumer){
+  configure(consumer: MiddlewareConsumer){
     consumer.apply(LoginMiddleware)
     .forRoutes(LoginController);
   }

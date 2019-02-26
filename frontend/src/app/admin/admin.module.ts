@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTabsModule, MatCardModule, MatTableModule, MatExpansionModule } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatTabsModule, MatCardModule, MatTableModule, MatExpansionModule, MatButtonModule } from '@angular/material';
 import { AdminRoutingModule } from './admin-routing.module';
 import { TournamentListComponent } from './tournament-list/tournament-list.component';
 import { TournamentEditorComponent } from './tournament-editor/tournament-editor.component';
@@ -22,7 +21,8 @@ import { RoundEditorComponent } from './round-editor/round-editor.component';
     MatTabsModule,
     MatCardModule,
     MatTableModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatButtonModule
   ],
   declarations: [TournamentListComponent, TournamentEditorComponent, LeagueEditorComponent,
      GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent],

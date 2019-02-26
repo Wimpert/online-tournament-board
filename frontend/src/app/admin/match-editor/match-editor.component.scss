@@ -1,11 +1,27 @@
-.name-container{
+
+:host{
+
+  & > div {
+    display: flex;
+  flex-direction: row;
+
+  &> *{
+    flex-grow: 1;
+  }
+
+  & > .name-container{
   white-space: nowrap;
-  width: 10%;
+  width: 20%;
   overflow: hidden;
   text-overflow: ellipsis;
+    }
+
+
+    & > .number-box{
+       width: 3em;
+    }
+  }
+
 }
 
 
-.number-box{
-  width: 3em;
-}

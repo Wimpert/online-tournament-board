@@ -34,7 +34,11 @@ export class TournamentService {
       }),
       map((tournament: Tournament) => this.processMatches(tournament)),
       map((tournament: Tournament) => {
-        // tournament.leagues.teams.sort((teamA, teamB) => this.compareTeams(teamA, teamB));
+        tournament.leagues.forEach((league: League) => {
+          league.groups.forEach((group: Group) => {
+            group.teams.sort((teamA, teamB) => this.compareTeams(teamA, teamB));
+          });
+        });
         return tournament;
       }),
     );
