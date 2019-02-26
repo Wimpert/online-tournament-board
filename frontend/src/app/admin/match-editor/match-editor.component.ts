@@ -1,4 +1,4 @@
-import { MATCH_UPDATE_EVENT_NAME } from './../constants';
+import { MATCH_UPDATE_EVENT } from './../constants';
 import { Match } from './../../../models/match.model';
 import { Component, OnInit, Input, ElementRef, OnChanges } from '@angular/core';
 
@@ -14,7 +14,7 @@ export class MatchEditorComponent {
   constructor(private element: ElementRef) { }
 
   matchChanged() {
-    this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT_NAME, {bubbles: true, detail: this.match}));
+    this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT, {bubbles: true, detail: this.match}));
   }
 
 }

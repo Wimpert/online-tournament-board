@@ -1,11 +1,15 @@
 <p>
-  Group: {{group .name}}
+  Group: <input type="text" id="{{group.id}}.group.name" [(ngModel)]="group.name" (ngModelChange)="groupNameChanged()">
+  <button mat-button mat-button color="primary" (click)="addTeamHandler($event)">Add Team</button>
+  <button mat-button mat-button color="warn" (click)="removeGroupHandler($event)">Remove Group</button>
 </p>
 <mat-table #table [dataSource]="group.teams">
 
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    <mat-cell *matCellDef="let element">
+        <input type="text" id="{{element.id}}.team.name" [(ngModel)]="element.name" (ngModelChange)="teamNameChanged(element)">
+     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="points">
@@ -41,6 +45,13 @@
   <ng-container matColumnDef="goalsConcieved">
     <mat-header-cell *matHeaderCellDef> GT </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.goalsConcieved}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="remove">
+    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button  mat-button mat-button color="warn" (click)="removeTeam(element.id)" >remove</button>
+    </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

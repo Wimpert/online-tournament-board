@@ -1,4 +1,4 @@
-import { MATCH_UPDATE_EVENT_NAME } from './../constants';
+import { MATCH_UPDATE_EVENT, GROUP_UPDATE_EVENT, ADD_TEAM_EVENT, TEAM_UPDATE_EVENT, REMOVE_TEAM_EVENT, REMOVE_GROUP_EVENT } from './../constants';
 import { Group } from './../../../models/group.model';
 import { League } from './../../../models/league.model';
 import { Match } from './../../../models/match.model';
@@ -8,10 +8,11 @@ import { Observable } from 'rxjs/Observable';
 import { Tournament } from '../../../models/tournament.model';
 import { TournamentService } from '../services/tournament.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, map, tap, debounceTime, shareReplay, share } from 'rxjs/operators';
+import { switchMap, map, tap, debounceTime, shareReplay, share, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
+import { Team } from '../../../models/team.model';
 
 @Component({
   selector: 'app-tournament-editor',
@@ -39,7 +40,7 @@ export class TournamentEditorComponent implements OnInit {
       debounceTime(300),
       switchMap(name => this.tournamentService.update({id: this.tournamentId, name: name}))
     ),
-    fromEvent(this.element.nativeElement, MATCH_UPDATE_EVENT_NAME).pipe(
+    fromEvent(this.element.nativeElement, MATCH_UPDATE_EVENT).pipe(
       debounceTime(1000),
       map((event: CustomEvent) => event.detail),
       switchMap( (match: Match) => this.tournamentService.updateMatch(match))
@@ -50,6 +51,39 @@ export class TournamentEditorComponent implements OnInit {
     this.addGroupToLeague.pipe(
       switchMap((leagueId: number) => this.tournamentService.addGroup(leagueId))
     ),
+
+    fromEvent(this.element.nativeElement, GROUP_UPDATE_EVENT).pipe(
+      debounceTime(1000),
+      map((event: CustomEvent) => event.detail),
+      switchMap( (group: Group) => this.tournamentService.updateGroup(group))
+    ),
+    fromEvent(this.element.nativeElement, ADD_TEAM_EVENT).pipe(
+      map((event: CustomEvent) => event.detail),
+      switchMap( (group: Group) => this.tournamentService.addTeam(group))
+    ),
+
+    fromEvent(this.element.nativeElement, TEAM_UPDATE_EVENT).pipe(
+      debounceTime(1000),
+      map((event: CustomEvent) => event.detail),
+      switchMap( (team: Team) => this.tournamentService.updateTeam(team))
+    ),
+    fromEvent(this.element.nativeElement, REMOVE_TEAM_EVENT).pipe(
+      debounceTime(1000),
+      map((event: CustomEvent) => event.detail),
+      switchMap( (teamId: number) => this.tournamentService.deleteTeam(teamId)),
+      withLatestFrom(this.route.params.pipe(
+        map(params => params['id']))),
+      switchMap(([ _ , id]: [any, number]) => this.tournamentService.findById(`${id}`))
+    ),
+    fromEvent(this.element.nativeElement, REMOVE_GROUP_EVENT).pipe(
+      debounceTime(1000),
+      map((event: CustomEvent) => event.detail),
+      switchMap( (groupId: number) => this.tournamentService.deleteGroup(groupId)),
+      withLatestFrom(this.route.params.pipe(
+        map(params => params['id']))),
+      switchMap(([ _ , id]: [any, number]) => this.tournamentService.findById(`${id}`))
+
+    )
     ).pipe(shareReplay());
 
     this.tournament$ = merge(this.tournamentUpdated$, this.route.params.pipe(

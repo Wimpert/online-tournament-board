@@ -1,6 +1,9 @@
+import { filter } from 'rxjs/operators';
+import { group } from '@angular/animations';
 import { League } from './../../../models/league.model';
 import { Group } from './../../../models/group.model';
-import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
+import { REMOVE_GROUP_EVENT } from '../constants';
 
 @Component({
   selector: 'app-league-editor',
@@ -12,6 +15,12 @@ export class LeagueEditorComponent {
   @Input() league: any;
   @Output() addTeamsToKnockRound: EventEmitter<League> = new EventEmitter<League>();
   @Output() addGroup: EventEmitter<League> = new EventEmitter<League>();
+
+  @HostListener(REMOVE_GROUP_EVENT, ['$event'])
+  onUnSelect(event: CustomEvent) {
+    const groupId = event.detail;
+    this.league = {... this.league, groups : [...this.league.groups.filter(group => group.id !== groupId)]};
+  }
 
   constructor(private element: ElementRef) { }
 

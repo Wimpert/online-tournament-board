@@ -1,5 +1,6 @@
+import { GROUP_UPDATE_EVENT, ADD_TEAM_EVENT, TEAM_UPDATE_EVENT, REMOVE_TEAM_EVENT, REMOVE_GROUP_EVENT } from './../constants';
 import { Group } from './../../../models/group.model';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ElementRef } from '@angular/core';
 import { TournamentService } from '../services/tournament.service';
 
 @Component({
@@ -10,9 +11,9 @@ import { TournamentService } from '../services/tournament.service';
 export class GroupEditorComponent implements OnChanges {
 
   @Input() group: Group;
-  displayedColumns: string[] = [ 'name', 'points', 'matchesPlayed', 'matchesWon', 'matchesLost', 'goalsScored', 'goalsConcieved'];
+  displayedColumns: string[] = [ 'name', 'points', 'matchesPlayed', 'matchesWon', 'matchesLost', 'goalsScored', 'goalsConcieved', 'remove'];
 
-  constructor(private tournamentService: TournamentService) { }
+  constructor(private tournamentService: TournamentService, private element: ElementRef) { }
 
   ngOnChanges() {
     if (this.group) {
@@ -21,6 +22,27 @@ export class GroupEditorComponent implements OnChanges {
     };
     }
 
+  }
+
+  groupNameChanged() {
+    this.element.nativeElement.dispatchEvent(new CustomEvent(GROUP_UPDATE_EVENT, {bubbles: true, detail: this.group}));
+  }
+
+  addTeamHandler() {
+    this.element.nativeElement.dispatchEvent(new CustomEvent(ADD_TEAM_EVENT, {bubbles: true, detail: this.group}));
+  }
+
+  teamNameChanged(team) {
+    this.element.nativeElement.dispatchEvent(new CustomEvent(TEAM_UPDATE_EVENT, {bubbles: true, detail: team}));
+  }
+
+  removeTeam(teamId: number) {
+    this.group = {... this.group, teams : [ ... this.group.teams.filter((team) => team.id !== teamId)]};
+    this.element.nativeElement.dispatchEvent(new CustomEvent(REMOVE_TEAM_EVENT, {bubbles: true, detail: teamId}));
+  }
+
+  removeGroupHandler() {
+      this.element.nativeElement.dispatchEvent(new CustomEvent(REMOVE_GROUP_EVENT, {bubbles: true, detail: this.group.id}));
   }
 
 

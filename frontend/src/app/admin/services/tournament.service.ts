@@ -1,3 +1,4 @@
+import { Group } from './../../../models/group.model';
 import { League } from './../../../models/league.model';
 import { Team } from './../../../models/team.model';
 import { Match } from './../../../models/match.model';
@@ -6,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { Tournament } from '../../../models/tournament.model';
+import { group } from '@angular/animations';
 
 @Injectable()
 export class TournamentService {
@@ -34,6 +36,14 @@ export class TournamentService {
     return this.httpClient.delete<any>(`${this.url}/${id}`, {withCredentials: true});
   }
 
+  deleteTeam(teamId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.url}/team/${teamId}`, {withCredentials: true});
+  }
+
+  deleteGroup(groupId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.url}/group/${groupId}`, {withCredentials: true});
+  }
+
   getNewTournament() {
     const tournament = new Tournament();
 
@@ -41,6 +51,18 @@ export class TournamentService {
 
   updateMatch(match: Match): Observable<Tournament> {
     return this.httpClient.put<Tournament>(`${this.url}/match`, match , {withCredentials: true});
+  }
+
+  updateGroup(group: Group): Observable<Tournament> {
+    return this.httpClient.put<Tournament>(`${this.url}/group`, group , {withCredentials: true});
+  }
+
+  updateTeam(team: Team): Observable<Tournament> {
+    return this.httpClient.put<Tournament>(`${this.url}/team`, team , {withCredentials: true});
+  }
+
+  addTeam(group: Group): Observable<Tournament> {
+    return this.httpClient.post<Tournament>(`${this.url}/addTeam/groupId/${group.id}`, undefined , {withCredentials: true});
   }
 
   addTeamsToKnockoutRound(leagueId: number) {
