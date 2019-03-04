@@ -18,4 +18,16 @@ export class Tournament extends AbstractEntity {
   @OneToMany(type => League, league => league.tournament, {cascade: true, eager: true, onDelete: 'CASCADE'})
   leagues: League[];
 
+  getNextMatchNumber(): number{
+    return this.leagues.reduce((acc: number, league: League) => {
+      return Math.max(acc, league.getMaxMatchNumber());
+    }, 0) + 1;
+  }
+
+  static deserialize(input: any): Tournament{
+    const tournament = new Tournament();
+    Object.assign(tournament, input);
+    return tournament;
+  }
+
 }

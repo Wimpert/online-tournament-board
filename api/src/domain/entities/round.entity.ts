@@ -21,4 +21,10 @@ export class Round{
   @OneToMany(type => RoundMatch, match => match.round , {cascade: true, eager: true})
   matches: RoundMatch[];
 
+  getMaxMatchNumber(): number{
+    return this.matches.reduce((acc: number, match: RoundMatch) => {
+      return Math.max(match.matchNr, acc);
+    }, 0);
+  }
+
 }

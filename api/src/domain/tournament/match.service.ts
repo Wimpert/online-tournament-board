@@ -19,6 +19,14 @@ export class MatchService {
     return from(this.matchRepository.update({id: match.id}, match));
   }
 
+  save(match: any): Observable<UpdateResult> {
+    return from(this.matchRepository.save(match));
+  }
+
+  delete(match: any): Observable<any> {
+    return from(this.matchRepository.delete(match));
+  }
+
   findTournamentByMatch(match: any): Observable<Tournament> {
     return this.tournamentService.findByMatch({id: match.id} as Match);
   }

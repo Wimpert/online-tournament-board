@@ -19,7 +19,7 @@ export class LeagueEditorComponent {
   @HostListener(REMOVE_GROUP_EVENT, ['$event'])
   onUnSelect(event: CustomEvent) {
     const groupId = event.detail;
-    this.league = {... this.league, groups : [...this.league.groups.filter(group => group.id !== groupId)]};
+    this.league = {... this.league, groups : [...this.league.groups.filter((group: Group) => group.id !== groupId)]};
   }
 
   constructor(private element: ElementRef) { }
@@ -40,6 +40,11 @@ export class LeagueEditorComponent {
   }
 
   addGroupHandler(event: MouseEvent) {
+    event.stopPropagation();
+    this.addGroup.emit(this.league);
+  }
+
+  addMatchHandler(event: MouseEvent) {
     event.stopPropagation();
     this.addGroup.emit(this.league);
   }

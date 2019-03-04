@@ -15,7 +15,7 @@ export class TeamService {
     return from(this.teamRepository.save(team));
   }
 
-  remove(team: any): Observable<any> {
+  delete(team: any): Observable<any> {
     return from(this.teamRepository.delete(team));
   }
 

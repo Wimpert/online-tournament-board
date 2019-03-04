@@ -1,4 +1,4 @@
-import { MATCH_UPDATE_EVENT, GROUP_UPDATE_EVENT, ADD_TEAM_EVENT, TEAM_UPDATE_EVENT, REMOVE_TEAM_EVENT, REMOVE_GROUP_EVENT } from './../constants';
+import { MATCH_UPDATE_EVENT, GROUP_UPDATE_EVENT, ADD_TEAM_EVENT, TEAM_UPDATE_EVENT, REMOVE_TEAM_EVENT, REMOVE_GROUP_EVENT, ADD_MATCH_EVENT, MATCH_REMOVE_EVENT } from './../constants';
 import { Group } from './../../../models/group.model';
 import { League } from './../../../models/league.model';
 import { Match } from './../../../models/match.model';
@@ -68,7 +68,6 @@ export class TournamentEditorComponent implements OnInit {
       switchMap( (team: Team) => this.tournamentService.updateTeam(team))
     ),
     fromEvent(this.element.nativeElement, REMOVE_TEAM_EVENT).pipe(
-      debounceTime(1000),
       map((event: CustomEvent) => event.detail),
       switchMap( (teamId: number) => this.tournamentService.deleteTeam(teamId)),
       withLatestFrom(this.route.params.pipe(
@@ -76,13 +75,23 @@ export class TournamentEditorComponent implements OnInit {
       switchMap(([ _ , id]: [any, number]) => this.tournamentService.findById(`${id}`))
     ),
     fromEvent(this.element.nativeElement, REMOVE_GROUP_EVENT).pipe(
-      debounceTime(1000),
       map((event: CustomEvent) => event.detail),
       switchMap( (groupId: number) => this.tournamentService.deleteGroup(groupId)),
       withLatestFrom(this.route.params.pipe(
         map(params => params['id']))),
       switchMap(([ _ , id]: [any, number]) => this.tournamentService.findById(`${id}`))
+    ),
+    fromEvent(this.element.nativeElement, MATCH_REMOVE_EVENT).pipe(
+      map((event: CustomEvent) => event.detail.id),
+      switchMap( (matchId: number) => this.tournamentService.deleteMatch(matchId)),
+      withLatestFrom(this.route.params.pipe(
+        map(params => params['id']))),
+      switchMap(([ _ , id]: [any, number]) => this.tournamentService.findById(`${id}`))
 
+    ),
+    fromEvent(this.element.nativeElement, ADD_MATCH_EVENT).pipe(
+      map((event: CustomEvent) => event.detail),
+      switchMap( (group: Group) => this.tournamentService.addMatch(group))
     )
     ).pipe(shareReplay());
 

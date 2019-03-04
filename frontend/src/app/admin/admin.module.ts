@@ -12,6 +12,7 @@ import { TeamEditorComponent } from './team-editor/team-editor.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { QuickMatchEditorComponent } from './quick-match-editor/quick-match-editor.component';
 import { RoundEditorComponent } from './round-editor/round-editor.component';
+import { ObjectPickerComponent } from './object-picker/object-picker.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { RoundEditorComponent } from './round-editor/round-editor.component';
     MatButtonModule
   ],
   declarations: [TournamentListComponent, TournamentEditorComponent, LeagueEditorComponent,
-     GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent],
+     GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent, ObjectPickerComponent],
   providers: [TournamentService]
 })
 export class AdminModule { }

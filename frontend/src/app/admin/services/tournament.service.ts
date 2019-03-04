@@ -44,6 +44,10 @@ export class TournamentService {
     return this.httpClient.delete<any>(`${this.url}/group/${groupId}`, {withCredentials: true});
   }
 
+  deleteMatch(matchId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.url}/match/${matchId}`, {withCredentials: true});
+  }
+
   getNewTournament() {
     const tournament = new Tournament();
 
@@ -63,6 +67,10 @@ export class TournamentService {
 
   addTeam(group: Group): Observable<Tournament> {
     return this.httpClient.post<Tournament>(`${this.url}/addTeam/groupId/${group.id}`, undefined , {withCredentials: true});
+  }
+
+  addMatch(group: Group): Observable<Tournament> {
+    return this.httpClient.post<Tournament>(`${this.url}/addMatch/groupId/${group.id}`, undefined , {withCredentials: true});
   }
 
   addTeamsToKnockoutRound(leagueId: number) {

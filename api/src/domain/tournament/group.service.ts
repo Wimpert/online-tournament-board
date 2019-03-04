@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { from, Observable } from 'rxjs';
@@ -15,7 +15,7 @@ export class GroupService {
     return from(this.groupRepository.save(group));
   }
 
-  remove(group: any): Observable<any> {
+  delete(group: any): Observable<any> {
     return from(this.groupRepository.delete(group));
   }
 }

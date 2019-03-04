@@ -1,4 +1,4 @@
-import { GROUP_UPDATE_EVENT, ADD_TEAM_EVENT, TEAM_UPDATE_EVENT, REMOVE_TEAM_EVENT, REMOVE_GROUP_EVENT } from './../constants';
+import { GROUP_UPDATE_EVENT, ADD_TEAM_EVENT, TEAM_UPDATE_EVENT, REMOVE_TEAM_EVENT, REMOVE_GROUP_EVENT, ADD_MATCH_EVENT } from './../constants';
 import { Group } from './../../../models/group.model';
 import { Component, Input, OnChanges, ElementRef } from '@angular/core';
 import { TournamentService } from '../services/tournament.service';
@@ -12,6 +12,7 @@ export class GroupEditorComponent implements OnChanges {
 
   @Input() group: Group;
   displayedColumns: string[] = [ 'name', 'points', 'matchesPlayed', 'matchesWon', 'matchesLost', 'goalsScored', 'goalsConcieved', 'remove'];
+
 
   constructor(private tournamentService: TournamentService, private element: ElementRef) { }
 
@@ -30,6 +31,10 @@ export class GroupEditorComponent implements OnChanges {
 
   addTeamHandler() {
     this.element.nativeElement.dispatchEvent(new CustomEvent(ADD_TEAM_EVENT, {bubbles: true, detail: this.group}));
+  }
+
+  addMatchHandler() {
+    this.element.nativeElement.dispatchEvent(new CustomEvent(ADD_MATCH_EVENT, {bubbles: true, detail: this.group}));
   }
 
   teamNameChanged(team) {

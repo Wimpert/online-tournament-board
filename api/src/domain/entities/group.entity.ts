@@ -1,3 +1,4 @@
+import { Match } from 'domain/entities/match.entity';
 import { GroupMatch } from './match.entity';
 import { Team } from './team.entity';
 import { League } from './league.entity';
@@ -37,6 +38,12 @@ export class Group{
 
   set allMatchesPlayed(played: boolean){
     this._allMatchesPlayed = played;
+  }
+
+  getMaxMatchNumber(): number{
+    return this.matches.reduce((acc: number, match: Match) => {
+      return Math.max(match.matchNr, acc);
+    }, 0);
   }
 
 }

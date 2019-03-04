@@ -1,0 +1,21 @@
+:host{
+  position: relative;
+}
+
+.dropdown{
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  width: 100%;
+  border: 1px solid gray;
+  margin: 2px;
+  border-radius: 4px;
+}
+.dropdown > div{
+  padding: 3px;
+}
+.dropdown > div:hover{
+  background: gray;
+  color:white;
+  cursor: pointer;
+}

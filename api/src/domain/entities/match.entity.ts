@@ -27,13 +27,13 @@ outTeamScore: number;
 @Column()
 matchNr: number;
 
-@Column()
+@Column({nullable: true})
 hour: number;
 
-@Column()
+@Column({nullable: true})
 minutes: number;
 
-@Column()
+@Column({nullable: true})
 terrain: number;
 
 @ManyToOne(type => Referee, referee => referee.matches, {cascade: false, eager: true, nullable: true})

@@ -1,11 +1,13 @@
 <div *ngIf="match">
   <span>{{match.matchNr}}</span>
-  <label class="name-container" for="{{match.id}}.homeTeamScore">{{match.homeTeam?.name}}</label>
+  <app-object-picker [options]="teamsInGroup" [fieldName]="'name'" [pickedOptionId]="match && match.homeTeam ? match.homeTeam.id : undefined" (optionPicked)="homeTeamOptionPickedHandler($event)"></app-object-picker>
   <input type="text" class="number-box" id="{{match.id}}.homeTeamScore" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
   -
   <input type="text"  class="number-box" id="{{match.id}}.outTeamScore" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
-  <label class="name-container" for="{{match.id}}.outTeamScore">{{match.outTeam?.name}}</label>
+  <app-object-picker [options]="teamsInGroup" [fieldName]="'name'" [pickedOptionId]="match && match.outTeam ? match.outTeam.id : undefined" (optionPicked)="outTeamOptionPickedHandler($event)"></app-object-picker>
+
   <label>Terrain</label> <input class="number-box" id="{{match.id}}.terrain" type="number" [(ngModel)]="match.terrain" (ngModelChange)="matchChanged()">
   <label>hour</label> <input type="text" class="number-box" id="{{match.id}}.hour" [(ngModel)]="match.hour" (ngModelChange)="matchChanged()">
   <label>:</label> <input type="text" class="number-box" id="{{match.id}}.minutes" [(ngModel)]="match.minutes" (ngModelChange)="matchChanged()">
+  <button mat-button mat-button color="warn" (click)="deleteMatch()" >Remove</button>
 </div>

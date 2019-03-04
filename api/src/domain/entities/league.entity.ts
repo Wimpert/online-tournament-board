@@ -21,4 +21,13 @@ export class League{
   @OneToMany(type => Round, round => round.league, {cascade: true, eager: true})
   rounds: Round[];
 
+  getMaxMatchNumber(): number {
+    return Math.max(this.groups.reduce((acc: number, group: Group) => {
+      return Math.max(acc, group.getMaxMatchNumber());
+    }, 0),
+    this.rounds.reduce((acc: number, round: Round) => {
+      return Math.max(acc, round.getMaxMatchNumber());
+    }, 0),
+    );
+  }
 }
