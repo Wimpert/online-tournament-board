@@ -8,17 +8,27 @@ import { Component, Input, EventEmitter, Output, HostListener, ElementRef } from
 export class ObjectPickerComponent<T>  {
 
 
+  private _options: T[];
+
+
   @Input()
-  options: T[];
+  set options(options: T[]) {
+    this._options =  options;
+    if (this._pickedOptionId) {
+      this.pickedOption = this._options.find((option: any) => option.id === this._pickedOptionId);
+    }
+
+  }
 
   pickedOption: T;
+  private _pickedOptionId:  number;
 
   @Input()
   set pickedOptionId(id: number) {
-    if (this.options) {
-      this.pickedOption = this.options.find((option) => option.id === id);
-      console.log(this.options, id, this.pickedOption);
+    if (this._options) {
+      this.pickedOption = this._options.find((option: any) => option.id === id);
     }
+    this._pickedOptionId = id;
   }
 
   @Input()
@@ -44,7 +54,7 @@ export class ObjectPickerComponent<T>  {
   inputValueChanged(event) {
     const value = (event && event.target && event.target.value) ? event.target.value : undefined;
     if (value) {
-      this.filteredOptions = [...this.options.filter(option => option[this.fieldName] ? option[this.fieldName].includes(value) : false)];
+      this.filteredOptions = [...this._options.filter(option => option[this.fieldName] ? option[this.fieldName].includes(value) : false)];
     }
   }
 

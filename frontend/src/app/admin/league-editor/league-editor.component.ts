@@ -1,8 +1,7 @@
-import { filter } from 'rxjs/operators';
-import { group } from '@angular/animations';
+
 import { League } from './../../../models/league.model';
 import { Group } from './../../../models/group.model';
-import { Component, OnInit, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, Input, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 import { REMOVE_GROUP_EVENT } from '../constants';
 
 @Component({

@@ -1,11 +1,12 @@
 import { Team } from './team.model';
-export class Match{
+export class Match {
 
   id: number;
   homeTeam: Team;
   outTeam: Team;
   homeTeamScore: number;
   outTeamScore: number;
-  matchNr:number;
+  matchNr: number;
+  referee: {id: number, name: string};
 
 }

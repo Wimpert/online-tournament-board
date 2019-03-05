@@ -12,23 +12,25 @@ import { switchMap, map, tap } from 'rxjs/operators';
 })
 export class QuickMatchEditorComponent implements OnInit {
 
-  @Input() allMatches : Match[];
+  @Input() allMatches: Match[];
 
-  match$ : Observable<Match>;
-  matchNumberChanged$ : Subject<number> = new Subject<number>();
-  matchNumber : number;
+  match$: Observable<Match>;
+  matchNumberChanged$: Subject<number> = new Subject<number>();
+  matchNumber: number;
 
   constructor(private tournamentService: TournamentService) { }
 
   ngOnInit() {
 
+
+
     this.match$ = this.matchNumberChanged$.pipe(
       map((matchNumber) => this.allMatches.find(match => match.matchNr === Number(matchNumber)))
-    )
+    );
   }
 
-  findMatch(){
-    this.matchNumberChanged$.next(this.matchNumber)
+  findMatch() {
+    this.matchNumberChanged$.next(this.matchNumber);
   }
 
 }

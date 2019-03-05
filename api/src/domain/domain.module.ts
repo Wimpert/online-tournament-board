@@ -18,9 +18,11 @@ import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'auth/auth.module';
 import { AuthService } from 'auth/auth.service';
+import { RefereeService } from './tournament/referee.service';
+import { Referee } from './entities/referee.entity';
 @Module({
-  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match, Group, Team]), AuthModule],
-  providers: [ TournamentService, UserService, AuthService, LeagueService, MatchService, GroupService, TeamService],
+  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match, Group, Team, Referee]), AuthModule],
+  providers: [ TournamentService, UserService, AuthService, LeagueService, MatchService, GroupService, TeamService, RefereeService],
   controllers: [TournamentController, UserController, LoginController],
 })
 export class DomainModule {

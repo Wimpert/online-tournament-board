@@ -9,5 +9,6 @@
   <label>Terrain</label> <input class="number-box" id="{{match.id}}.terrain" type="number" [(ngModel)]="match.terrain" (ngModelChange)="matchChanged()">
   <label>hour</label> <input type="text" class="number-box" id="{{match.id}}.hour" [(ngModel)]="match.hour" (ngModelChange)="matchChanged()">
   <label>:</label> <input type="text" class="number-box" id="{{match.id}}.minutes" [(ngModel)]="match.minutes" (ngModelChange)="matchChanged()">
+  <app-object-picker [options]="allReferees$ | async" [fieldName]="'name'" [pickedOptionId]="match && match.referee ? match.referee.id : undefined" (optionPicked)="refereeOptionPickedHandler($event)"></app-object-picker>
   <button mat-button mat-button color="warn" (click)="deleteMatch()" >Remove</button>
 </div>

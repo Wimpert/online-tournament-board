@@ -8,11 +8,16 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { Tournament } from '../../../models/tournament.model';
 import { group } from '@angular/animations';
+import { share, tap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class TournamentService {
 
   url = `${environment.baseUrl}/tournament`;
+
+  allReferees: {name: string, id: number}[];
+  allReferees$: Observable<{name: string, id: number}[]>;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -79,6 +84,22 @@ export class TournamentService {
 
   addGroup(leagueId: number) {
     return this.httpClient.post<Tournament>(`${this.url}/addGroup/leagueId/${leagueId}`, undefined, {withCredentials: true});
+  }
+
+  findAllReferees(): Observable<{id: number, name: string}[]> {
+
+    if (this.allReferees) {
+      return of(this.allReferees);
+    } else if (this.allReferees$) {
+      return this.allReferees$;
+    } else {
+      this.allReferees$ = this.httpClient.get<{id: number, name: string}[]>(`${this.url}/referee/all`, {withCredentials: true}).pipe(
+        tap(data => this.allReferees = data),
+        tap(data => this.allReferees$ = undefined),
+        share()
+      );
+      return this.allReferees$;
+    }
   }
 
   compareTeams(teama: Team, teamb: Team): number {

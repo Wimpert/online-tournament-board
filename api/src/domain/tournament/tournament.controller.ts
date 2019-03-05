@@ -23,6 +23,8 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { RefereeService } from './referee.service';
+import { Referee } from 'domain/entities/referee.entity';
 
 @Controller('tournament')
 export class TournamentController {
@@ -30,12 +32,17 @@ export class TournamentController {
               private leagueService: LeagueService,
               private matchService: MatchService,
               private groupService: GroupService,
-              private teamService: TeamService) {}
+              private teamService: TeamService, private refereeService: RefereeService) {}
 
   @Get('/all')
   findByUser(@Req() request: any): Observable<Tournament[]> {
     const token = this.jwtService.decode(request.cookies[JWT_TOKEN_NAME]);
     return this.tournamentService.find({userId: token.user.id});
+  }
+
+  @Get('/referee/all')
+  getAllReferees(@Req() request: any): Observable<Referee[]> {
+    return this.refereeService.findAll();
   }
 
   @Get(':id')
@@ -179,7 +186,7 @@ export class TournamentController {
   }
 
   @Delete('/match/:matchId')
-  delete(@Param('matchId') matchId): Observable<DeleteResult> {
+  deleteMatch(@Param('matchId') matchId): Observable<DeleteResult> {
     return this.matchService.delete({id: matchId});
   }
 }
