@@ -1,8 +1,8 @@
 <p>
   Group: <input type="text" id="{{group.id}}.group.name" [(ngModel)]="group.name" (ngModelChange)="groupNameChanged()">
-  <button mat-button mat-button color="primary" (click)="addTeamHandler($event)">Add Team</button>
-  <button mat-button mat-button color="primary" (click)="addMatchHandler($event)">Add Match</button>
-  <button mat-button mat-button color="warn" (click)="removeGroupHandler($event)">Remove Group</button>
+  <button mat-button mat-button color="primary" (click)="addTeamHandler()">Add Team</button>
+  <button mat-button mat-button color="primary" (click)="addMatchHandler()">Add Match</button>
+  <button mat-button mat-button color="warn" (click)="removeGroupHandler()">Remove Group</button>
 </p>
 <mat-table #table [dataSource]="group.teams">
 
