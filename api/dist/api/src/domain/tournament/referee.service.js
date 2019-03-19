@@ -16,7 +16,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const rxjs_1 = require("rxjs");
-const referee_entity_1 = require("domain/entities/referee.entity");
+const referee_entity_1 = require("../entities/referee.entity");
 let RefereeService = class RefereeService {
     constructor(refereeRepository) {
         this.refereeRepository = refereeRepository;

@@ -15,6 +15,7 @@ const cookie_parser_1 = require("@nest-middlewares/cookie-parser");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(cookie_parser_1.CookieParserMiddleware).forRoutes({ path: '*', method: common_1.RequestMethod.ALL }).apply(auth_middleware_1.AuthMiddleware)
+            .exclude({ path: 'public-tournament', method: common_1.RequestMethod.GET })
             .forRoutes({ path: '*', method: common_1.RequestMethod.ALL });
     }
 };

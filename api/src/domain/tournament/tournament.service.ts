@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/auth.service';
 import { HOME_TEAM_WINS, OUT_TEAM_WINS } from './../../constants';
 import { Tournament } from './../entities/tournament.entity';
 import { GroupMatch, RoundMatch } from './../entities/match.entity';
@@ -5,17 +6,16 @@ import { Team } from './../entities/team.entity';
 import { Group } from './../entities/group.entity';
 import { League } from './../entities/league.entity';
 
-import { AuthService } from 'auth/auth.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
 import { from, Observable } from 'rxjs';
-import { User } from 'domain/entities/user.entity';
+import { User } from '../entities/user.entity';
 import { switchMap, map, tap } from 'rxjs/operators';
-import { Match } from 'domain/entities/match.entity';
+import { Match } from '../entities/match.entity';
 
 import {setHours, setMinutes, addMinutes, getHours, getMinutes, addHours} from 'date-fns';
-import { Round } from 'domain/entities/round.entity';
+import { Round } from '../entities/round.entity';
 
 @Injectable()
 export class TournamentService {
@@ -26,12 +26,7 @@ export class TournamentService {
   ) {}
 
   findOne(tournament: any): Observable<Tournament> {
-    console.time('find');
     return from(this.tournamentRepository.findOne(tournament)).pipe(
-      tap(_ => {
-        console.log(_);
-        console.timeEnd('find');
-      }),
       map((tournament: Tournament) => this.processMatches(tournament)),
       map((tournament: Tournament) => {
         tournament.leagues.forEach((league: League) => {
@@ -78,6 +73,10 @@ export class TournamentService {
     return from(this.tournamentRepository.findOne({leagues: [{ groups: [ {teams : [team]}]}]})).pipe(
       map((tournament: Tournament) => this.processMatches(tournament)),
     );
+  }
+
+  findIdOfFirstactive(): Observable<any>{
+    return from(this.tournamentRepository.findOne({}, {select: ['id']}));
   }
 
   createNew(userId: number): Tournament {

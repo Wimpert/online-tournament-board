@@ -32,6 +32,9 @@ export class AppModule implements NestModule {
     consumer.apply(CookieParserMiddleware).forRoutes(
       { path: '*', method: RequestMethod.ALL },
     ).apply(AuthMiddleware)
+    .exclude(
+      {path: 'public-tournament', method: RequestMethod.GET},
+    )
     .forRoutes(
       { path: '*', method: RequestMethod.ALL },
     );

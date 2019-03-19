@@ -1,7 +1,6 @@
 import { User } from './user.entity';
-import { Entity, PrimaryColumn, ManyToOne, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { userInfo } from 'os';
-import { AbstractEntity } from 'domain/entities/abstract.entity';
+import { Entity, ManyToOne, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
 import { League } from './league.entity';
 
 @Entity()

@@ -1,9 +1,9 @@
-import { Tournament } from 'domain/entities/tournament.entity';
+import { Tournament } from '../entities/tournament.entity';
 import { TeamService } from './team.service.';
 import { Team } from './../entities/team.entity';
 import { GroupService } from './group.service';
 import { Group } from './../entities/group.entity';
-import { Match, GroupMatch } from 'domain/entities/match.entity';
+import { Match, GroupMatch } from '../entities/match.entity';
 import { MatchService } from './match.service';
 import { LeagueService } from './league.service';
 import { League } from './../entities/league.entity';
@@ -24,7 +24,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs/operators';
 import { RefereeService } from './referee.service';
-import { Referee } from 'domain/entities/referee.entity';
+import { Referee } from '../entities/referee.entity';
 
 @Controller('tournament')
 export class TournamentController {

@@ -1,7 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { JWT_TOKEN_NAME } from './../constants';
 import { JwtStrategy } from './jwt.strategy';
-import { Injectable, MiddlewareFunction, NestMiddleware, Inject, HttpStatus } from '@nestjs/common';
+import { Injectable, MiddlewareFunction, NestMiddleware, Inject, HttpStatus, RequestMethod } from '@nestjs/common';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -10,7 +10,9 @@ export class AuthMiddleware implements NestMiddleware {
 
   resolve(...args: any[]): MiddlewareFunction {
     return (req , res, next) => {
-      if (req.originalUrl === '/api/user' || req.originalUrl === '/api/login'){
+    if (req.originalUrl === '/api/user'
+       || req.originalUrl === '/api/login'
+       || (req.originalUrl.startsWith('/api/public-tournament') && req.method === 'GET')) {
         next();
       } else if (req.cookies === undefined || req.cookies[JWT_TOKEN_NAME] === undefined){
        res.sendStatus(HttpStatus.UNAUTHORIZED);

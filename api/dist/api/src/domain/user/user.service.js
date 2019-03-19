@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const rxjs_1 = require("rxjs");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;

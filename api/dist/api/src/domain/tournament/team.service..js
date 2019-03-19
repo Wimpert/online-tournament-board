@@ -27,6 +27,14 @@ let TeamService = class TeamService {
     delete(team) {
         return rxjs_1.from(this.teamRepository.delete(team));
     }
+    findAllForTournamentId(tournament) {
+        return rxjs_1.from(this.teamRepository.createQueryBuilder('team')
+            .innerJoin('team.group', 'group')
+            .innerJoin('group.league', 'league')
+            .innerJoin('league.tournament', 'tournament')
+            .where('tournament.id = :id', { id: tournament.id })
+            .getMany());
+    }
 };
 TeamService = __decorate([
     common_1.Injectable(),

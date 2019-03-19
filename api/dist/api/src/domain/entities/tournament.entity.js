@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Tournament_1;
 const user_entity_1 = require("./user.entity");
 const typeorm_1 = require("typeorm");
-const abstract_entity_1 = require("domain/entities/abstract.entity");
+const abstract_entity_1 = require("./abstract.entity");
 const league_entity_1 = require("./league.entity");
 let Tournament = Tournament_1 = class Tournament extends abstract_entity_1.AbstractEntity {
     getNextMatchNumber() {

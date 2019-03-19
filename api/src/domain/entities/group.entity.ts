@@ -1,12 +1,8 @@
-import { Match } from 'domain/entities/match.entity';
+import { Match } from './match.entity';
 import { GroupMatch } from './match.entity';
 import { Team } from './team.entity';
 import { League } from './league.entity';
-import { User } from './user.entity';
-import { Entity, PrimaryColumn, ManyToOne, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { userInfo } from 'os';
-import { AbstractEntity } from 'domain/entities/abstract.entity';
-import { Tournament } from './tournament.entity';
+import { Entity, ManyToOne, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Group{

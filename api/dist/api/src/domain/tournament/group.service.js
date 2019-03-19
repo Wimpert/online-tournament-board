@@ -16,7 +16,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const rxjs_1 = require("rxjs");
-const group_entity_1 = require("domain/entities/group.entity");
+const group_entity_1 = require("../entities/group.entity");
 let GroupService = class GroupService {
     constructor(groupRepository) {
         this.groupRepository = groupRepository;

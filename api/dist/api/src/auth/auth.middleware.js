@@ -20,7 +20,9 @@ let AuthMiddleware = class AuthMiddleware {
     }
     resolve(...args) {
         return (req, res, next) => {
-            if (req.originalUrl === '/api/user' || req.originalUrl === '/api/login') {
+            if (req.originalUrl === '/api/user'
+                || req.originalUrl === '/api/login'
+                || (req.originalUrl.startsWith('/api/public-tournament') && req.method === 'GET')) {
                 next();
             }
             else if (req.cookies === undefined || req.cookies[constants_1.JWT_TOKEN_NAME] === undefined) {

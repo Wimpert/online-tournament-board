@@ -26,7 +26,7 @@ let LeagueService = class LeagueService {
         return rxjs_1.from(this.leagueRepository.update({ id: league.id }, league)).pipe(operators_1.switchMap(_ => this.findOne({ id: league.id })));
     }
     findOne(league) {
-        return rxjs_1.from(this.leagueRepository.findOne(league, { relations: ["tournament"] }));
+        return rxjs_1.from(this.leagueRepository.findOne(league, { relations: ['tournament'] }));
     }
 };
 LeagueService = __decorate([

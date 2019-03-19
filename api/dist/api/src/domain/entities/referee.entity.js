@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const match_entity_1 = require("domain/entities/match.entity");
+const match_entity_1 = require("./match.entity");
 const typeorm_1 = require("typeorm");
 let Referee = class Referee {
 };

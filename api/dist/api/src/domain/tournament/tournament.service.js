@@ -12,30 +12,26 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const auth_service_1 = require("./../../auth/auth.service");
 const constants_1 = require("./../../constants");
 const tournament_entity_1 = require("./../entities/tournament.entity");
 const match_entity_1 = require("./../entities/match.entity");
 const team_entity_1 = require("./../entities/team.entity");
 const group_entity_1 = require("./../entities/group.entity");
-const auth_service_1 = require("auth/auth.service");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const date_fns_1 = require("date-fns");
-const round_entity_1 = require("domain/entities/round.entity");
+const round_entity_1 = require("../entities/round.entity");
 let TournamentService = class TournamentService {
     constructor(tournamentRepository, authService) {
         this.tournamentRepository = tournamentRepository;
         this.authService = authService;
     }
     findOne(tournament) {
-        console.time('find');
-        return rxjs_1.from(this.tournamentRepository.findOne(tournament)).pipe(operators_1.tap(_ => {
-            console.log(_);
-            console.timeEnd('find');
-        }), operators_1.map((tournament) => this.processMatches(tournament)), operators_1.map((tournament) => {
+        return rxjs_1.from(this.tournamentRepository.findOne(tournament)).pipe(operators_1.map((tournament) => this.processMatches(tournament)), operators_1.map((tournament) => {
             tournament.leagues.forEach((league) => {
                 league.groups.forEach((group) => {
                     group.teams.sort((teamA, teamB) => this.compareTeams(teamA, teamB));
@@ -64,6 +60,9 @@ let TournamentService = class TournamentService {
     }
     findByTeam(team) {
         return rxjs_1.from(this.tournamentRepository.findOne({ leagues: [{ groups: [{ teams: [team] }] }] })).pipe(operators_1.map((tournament) => this.processMatches(tournament)));
+    }
+    findIdOfFirstactive() {
+        return rxjs_1.from(this.tournamentRepository.findOne({}, { select: ['id'] }));
     }
     createNew(userId) {
         const allTeams = [

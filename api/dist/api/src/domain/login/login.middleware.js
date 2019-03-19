@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const operators_1 = require("rxjs/operators");
 const user_service_1 = require("./../user/user.service");
 const common_1 = require("@nestjs/common");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 let LoginMiddleware = class LoginMiddleware {
     constructor(userService) {
         this.userService = userService;

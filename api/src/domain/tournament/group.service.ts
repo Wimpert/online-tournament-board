@@ -2,7 +2,7 @@ import { Injectable, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { from, Observable } from 'rxjs';
-import { Group } from 'domain/entities/group.entity';
+import { Group } from '../entities/group.entity';
 
 @Injectable()
 export class GroupService {

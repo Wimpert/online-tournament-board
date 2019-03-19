@@ -12,12 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const tournament_entity_1 = require("domain/entities/tournament.entity");
+const tournament_entity_1 = require("../entities/tournament.entity");
 const team_service_1 = require("./team.service.");
 const team_entity_1 = require("./../entities/team.entity");
 const group_service_1 = require("./group.service");
 const group_entity_1 = require("./../entities/group.entity");
-const match_entity_1 = require("domain/entities/match.entity");
+const match_entity_1 = require("../entities/match.entity");
 const match_service_1 = require("./match.service");
 const league_service_1 = require("./league.service");
 const league_entity_1 = require("./../entities/league.entity");

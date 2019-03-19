@@ -1,4 +1,4 @@
-import { Match } from 'domain/entities/match.entity';
+import { Match } from './match.entity';
 import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from 'typeorm';
 
 @Entity()
