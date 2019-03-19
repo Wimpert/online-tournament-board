@@ -14,7 +14,7 @@ function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
         app.setGlobalPrefix('api');
-        app.enableCors({ origin: ['http://localhost:8080', 'http://localhost:4200'], credentials: true });
+        app.enableCors({ origin: ['http://localhost:8080', 'http://localhost:4200', 'http://www.dejackies.be'], credentials: true });
         yield app.listen(3000);
     });
 }
