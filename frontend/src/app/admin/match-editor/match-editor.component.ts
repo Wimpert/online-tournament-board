@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
 export class MatchEditorComponent implements OnInit {
 
   @Input() match: Match;
-  @Input() teamsInGroup: Team[];
+  @Input() possibleTeamsInMatch: Team[];
 
   allReferees$: Observable<{name: string, id: number}[]>;
 

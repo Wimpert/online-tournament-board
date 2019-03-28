@@ -25,6 +25,7 @@ export class TournamentEditorComponent implements OnInit {
   tournamentUpdated$: Observable<Tournament>;
   matchUpdated$: Observable<Tournament>;
   tournamentNamedChanged$: Subject<string> = new Subject<string>();
+  tournamentDateChanged$: Subject<string> = new Subject<string>();
   tournamentId: number;
   allMatches$: Observable<Match[]>;
 
@@ -36,9 +37,11 @@ export class TournamentEditorComponent implements OnInit {
   ngOnInit() {
 
     this.tournamentUpdated$ = merge(this.tournamentNamedChanged$.pipe(
-
       debounceTime(300),
       switchMap(name => this.tournamentService.update({id: this.tournamentId, name: name}))
+    ),
+    this.tournamentDateChanged$.pipe(
+      switchMap(date => this.tournamentService.update({id: this.tournamentId, startDateTime: date}))
     ),
     fromEvent(this.element.nativeElement, MATCH_UPDATE_EVENT).pipe(
       debounceTime(1000),
@@ -104,6 +107,7 @@ export class TournamentEditorComponent implements OnInit {
         }
         return this.tournamentService.findById(id);
       }),
+      tap((tournament) => this.tournamentId = tournament.id),
       shareReplay()
       ));
 
@@ -121,8 +125,12 @@ export class TournamentEditorComponent implements OnInit {
 
   }
 
-  tournamentChanged(event: string) {
+  tournamentNameChanged(event: string) {
     this.tournamentNamedChanged$.next(event);
+  }
+
+  tournamentDateChanged(event) {
+    this.tournamentDateChanged$.next(event);
   }
 
  trackLeague(league: League) {

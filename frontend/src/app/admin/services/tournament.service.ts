@@ -1,5 +1,4 @@
 import { Group } from './../../../models/group.model';
-import { League } from './../../../models/league.model';
 import { Team } from './../../../models/team.model';
 import { Match } from './../../../models/match.model';
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +17,8 @@ export class TournamentService {
 
   allReferees: {name: string, id: number}[];
   allReferees$: Observable<{name: string, id: number}[]>;
+  allTeams: Team[];
+  allTeams$: Observable<Team[]>;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -99,6 +100,22 @@ export class TournamentService {
         share()
       );
       return this.allReferees$;
+    }
+  }
+
+  findAllTeams(leagueId: number): Observable<Team[]> {
+
+    if (this.allTeams$) {
+      return of(this.allTeams);
+    } else if (this.allTeams$) {
+      return this.allTeams$;
+    } else {
+      this.allTeams$ = this.httpClient.get<Team[]>(`${this.url}/team/all/${leagueId}`, {withCredentials: true}).pipe(
+        tap(data => this.allTeams = data),
+        tap(data => this.allTeams$ = undefined),
+        share()
+      );
+      return this.allTeams$;
     }
   }
 

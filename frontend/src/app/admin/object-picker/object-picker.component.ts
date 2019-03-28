@@ -41,7 +41,7 @@ export class ObjectPickerComponent<T>  {
 
   constructor(private element: ElementRef) {}
 
-  @HostListener('keydown')
+  @HostListener('keydown', ['$event'])
   onkeydown(event: KeyboardEvent) {
     if (event && event.key === 'Escape') {
       this.filteredOptions = [];
@@ -54,7 +54,7 @@ export class ObjectPickerComponent<T>  {
   inputValueChanged(event) {
     const value = (event && event.target && event.target.value) ? event.target.value : undefined;
     if (value) {
-      this.filteredOptions = [...this._options.filter(option => option[this.fieldName] ? option[this.fieldName].includes(value) : false)];
+      this.filteredOptions = [...this._options.filter(option => option[this.fieldName] ? option[this.fieldName].toLowerCase().includes(value.toLowerCase()) : false)];
     }
   }
 

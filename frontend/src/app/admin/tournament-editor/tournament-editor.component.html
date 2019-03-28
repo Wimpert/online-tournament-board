@@ -1,5 +1,10 @@
 <div *ngIf="tournament$ | async as tournament">
     <input type="text" [ngModel]="tournament.name" (ngModelChange)=tournamentChanged($event)>
+
+      <input matInput [matDatepicker]="picker3" placeholder="Value binding" [ngModel]="tournament.startDateTime" (ngModelChange)="tournamentDateChanged($event)">
+      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+      <mat-datepicker #picker3></mat-datepicker>
+
     <div>
         <mat-card>
            <app-quick-match-editor [allMatches]="allMatches$ | async"></app-quick-match-editor>

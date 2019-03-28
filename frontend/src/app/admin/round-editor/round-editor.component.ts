@@ -1,3 +1,4 @@
+import { Team } from './../../../models/team.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { Round } from '../../../models/round.model';
 
@@ -10,6 +11,10 @@ export class RoundEditorComponent implements OnInit {
 
   @Input()
   round: Round;
+
+  @Input()
+  teamsInRound: Team[];
+
 
   constructor() { }
 

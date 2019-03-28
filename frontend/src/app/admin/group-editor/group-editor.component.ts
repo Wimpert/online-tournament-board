@@ -50,5 +50,9 @@ export class GroupEditorComponent implements OnChanges {
       this.element.nativeElement.dispatchEvent(new CustomEvent(REMOVE_GROUP_EVENT, {bubbles: true, detail: this.group.id}));
   }
 
+  trackMatch(index, item) {
+    return item.id;
+  }
+
 
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTabsModule, MatCardModule, MatTableModule, MatExpansionModule, MatButtonModule } from '@angular/material';
+import { MatTabsModule, MatCardModule, MatTableModule, MatExpansionModule, MatButtonModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule } from '@angular/material';
 import { AdminRoutingModule } from './admin-routing.module';
 import { TournamentListComponent } from './tournament-list/tournament-list.component';
 import { TournamentEditorComponent } from './tournament-editor/tournament-editor.component';
@@ -23,7 +23,10 @@ import { ObjectPickerComponent } from './object-picker/object-picker.component';
     MatCardModule,
     MatTableModule,
     MatExpansionModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule
   ],
   declarations: [TournamentListComponent, TournamentEditorComponent, LeagueEditorComponent,
      GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent, ObjectPickerComponent],
