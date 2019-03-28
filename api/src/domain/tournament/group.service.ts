@@ -18,4 +18,8 @@ export class GroupService {
   delete(group: any): Observable<any> {
     return from(this.groupRepository.delete(group));
   }
+
+  findOne(group: Group): Observable<Group> {
+    return from(this.groupRepository.findOne(group));
+  }
 }

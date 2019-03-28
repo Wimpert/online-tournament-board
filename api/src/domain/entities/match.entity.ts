@@ -36,6 +36,9 @@ minutes: number;
 @Column({nullable: true})
 terrain: number;
 
+@Column({nullable: true})
+comment: string;
+
 @ManyToOne(type => Referee, referee => referee.matches, {cascade: false, eager: true, nullable: true})
 referee: Referee;
 

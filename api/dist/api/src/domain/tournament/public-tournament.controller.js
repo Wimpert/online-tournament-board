@@ -16,9 +16,10 @@ const team_service_1 = require("./team.service.");
 const group_service_1 = require("./group.service");
 const match_service_1 = require("./match.service");
 const league_service_1 = require("./league.service");
+const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const tournament_service_1 = require("./tournament.service");
-const common_1 = require("@nestjs/common");
+const common_2 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const referee_service_1 = require("./referee.service");
@@ -35,16 +36,57 @@ let PublicTournamentController = class PublicTournamentController {
     findByUser(request) {
         return this.tournamentService.findIdOfFirstactive().pipe(operators_1.switchMap(tournamentId => this.teamService.findAllForTournamentId(tournamentId)));
     }
+    findTeamInfoDto(request, id) {
+        return this.teamService.findTeamInfo(id).pipe(operators_1.tap(console.log));
+    }
+    findAllMatchesForTeam(request, id) {
+        return this.teamService.findTeamInfo(id).pipe(operators_1.tap(console.log));
+    }
+    getGroupInfo(request, id) {
+        return this.groupService.findOne({ id });
+    }
+    getMatches(request, ids) {
+        const idsToFind = ids.split(',').map(numberString => Number(numberString));
+        return this.matchService.findMatchesWithTeam(idsToFind);
+    }
 };
 __decorate([
-    common_1.Get('/all/teams'),
-    __param(0, common_1.Req()),
+    common_2.Get('/all/teams'),
+    __param(0, common_2.Req()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], PublicTournamentController.prototype, "findByUser", null);
+__decorate([
+    common_2.Get('/teaminfo/:id'),
+    __param(0, common_2.Req()), __param(1, common_2.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], PublicTournamentController.prototype, "findTeamInfoDto", null);
+__decorate([
+    common_2.Get('/matches/:teamId'),
+    __param(0, common_2.Req()), __param(1, common_2.Param('teamId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], PublicTournamentController.prototype, "findAllMatchesForTeam", null);
+__decorate([
+    common_2.Get('/group/:groupId'),
+    __param(0, common_2.Req()), __param(1, common_2.Param('groupId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], PublicTournamentController.prototype, "getGroupInfo", null);
+__decorate([
+    common_2.Get('/match'),
+    __param(0, common_2.Req()), __param(1, common_1.Query('ids')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], PublicTournamentController.prototype, "getMatches", null);
 PublicTournamentController = __decorate([
-    common_1.Controller('public-tournament'),
+    common_2.Controller('public-tournament'),
     __metadata("design:paramtypes", [tournament_service_1.TournamentService, jwt_1.JwtService,
         league_service_1.LeagueService,
         match_service_1.MatchService,

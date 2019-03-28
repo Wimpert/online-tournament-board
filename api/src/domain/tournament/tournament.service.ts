@@ -26,7 +26,9 @@ export class TournamentService {
   ) {}
 
   findOne(tournament: any): Observable<Tournament> {
+    console.log(tournament);
     return from(this.tournamentRepository.findOne(tournament)).pipe(
+      tap(console.log),
       map((tournament: Tournament) => this.processMatches(tournament)),
       map((tournament: Tournament) => {
         tournament.leagues.forEach((league: League) => {
@@ -96,7 +98,9 @@ export class TournamentService {
 
     const tour = new Tournament();
 
-    tour.name =  new Date().toString();
+    tour.startDateTime =  new Date();
+
+    tour.name =  tour.startDateTime.toString();
 
     tour.user = {id: userId} as User;
 
@@ -184,38 +188,43 @@ export class TournamentService {
 
     returnVal.leagues.forEach((league: League) => {
       league.groups.forEach((group: Group) => {
-        group.teams.forEach((team: Team) => team.reset());
-        group.allMatchesPlayed = true;
-        group.matches.forEach((match: Match) => {
-          if (match.homeTeamScore !== undefined && match.homeTeamScore !== null && match.outTeamScore !== undefined && match.outTeamScore !== null){
-            const homeTeam = group.getTeamById(match.homeTeam.id);
-            const outTeam = group.getTeamById(match.outTeam.id);
-            homeTeam.matchesPlayed++;
-            outTeam.matchesPlayed++;
-
-            if (match.getOutCome() === HOME_TEAM_WINS){
-              homeTeam.matchesWon++;
-              outTeam.matchesLost++;
-            } else if (match.getOutCome() === OUT_TEAM_WINS){
-              homeTeam.matchesLost++;
-              outTeam.matchesWon++;
-            } else {
-              homeTeam.matchesDrawed++;
-              outTeam.matchesDrawed++;
-            }
-            outTeam.goalsScored += match.outTeamScore;
-            outTeam.goalsConcieved += match.homeTeamScore;
-            homeTeam.goalsScored += match.homeTeamScore;
-            homeTeam.goalsConcieved += match.outTeamScore;
-          } else {
-            group.allMatchesPlayed = false;
-          }
-        });
-        group.teams.forEach((team: Team) => {team.points = 3 * team.matchesWon + team.matchesDrawed; });
+          this.processMatchesOfGroup(group);
         });
     });
     return returnVal;
 
+  }
+
+  processMatchesOfGroup(group: Group){
+
+    group.teams.forEach((team: Team) => team.reset());
+    group.allMatchesPlayed = true;
+    group.matches.forEach((match: Match) => {
+      if (match.homeTeamScore !== undefined && match.homeTeamScore !== null && match.outTeamScore !== undefined && match.outTeamScore !== null){
+        const homeTeam = group.getTeamById(match.homeTeam.id);
+        const outTeam = group.getTeamById(match.outTeam.id);
+        homeTeam.matchesPlayed++;
+        outTeam.matchesPlayed++;
+
+        if (match.getOutCome() === HOME_TEAM_WINS){
+          homeTeam.matchesWon++;
+          outTeam.matchesLost++;
+        } else if (match.getOutCome() === OUT_TEAM_WINS){
+          homeTeam.matchesLost++;
+          outTeam.matchesWon++;
+        } else {
+          homeTeam.matchesDrawed++;
+          outTeam.matchesDrawed++;
+        }
+        outTeam.goalsScored += match.outTeamScore;
+        outTeam.goalsConcieved += match.homeTeamScore;
+        homeTeam.goalsScored += match.homeTeamScore;
+        homeTeam.goalsConcieved += match.outTeamScore;
+      } else {
+        group.allMatchesPlayed = false;
+      }
+    });
+    group.teams.forEach((team: Team) => {team.points = 3 * team.matchesWon + team.matchesDrawed; });
   }
 
   compareTeams(teama: Team, teamb: Team): number {

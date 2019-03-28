@@ -27,6 +27,9 @@ let GroupService = class GroupService {
     delete(group) {
         return rxjs_1.from(this.groupRepository.delete(group));
     }
+    findOne(group) {
+        return rxjs_1.from(this.groupRepository.findOne(group));
+    }
 };
 GroupService = __decorate([
     common_1.Injectable(),

@@ -31,7 +31,8 @@ let TournamentService = class TournamentService {
         this.authService = authService;
     }
     findOne(tournament) {
-        return rxjs_1.from(this.tournamentRepository.findOne(tournament)).pipe(operators_1.map((tournament) => this.processMatches(tournament)), operators_1.map((tournament) => {
+        console.log(tournament);
+        return rxjs_1.from(this.tournamentRepository.findOne(tournament)).pipe(operators_1.tap(console.log), operators_1.map((tournament) => this.processMatches(tournament)), operators_1.map((tournament) => {
             tournament.leagues.forEach((league) => {
                 league.groups.forEach((group) => {
                     group.teams.sort((teamA, teamB) => this.compareTeams(teamA, teamB));
@@ -77,7 +78,8 @@ let TournamentService = class TournamentService {
         ];
         const groupLetter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         const tour = new tournament_entity_1.Tournament();
-        tour.name = new Date().toString();
+        tour.startDateTime = new Date();
+        tour.name = tour.startDateTime.toString();
         tour.user = { id: userId };
         tour.leagues = [
             { name: 'Mannen', groups: [] },

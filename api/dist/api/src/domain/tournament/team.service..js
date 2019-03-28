@@ -35,6 +35,22 @@ let TeamService = class TeamService {
             .where('tournament.id = :id', { id: tournament.id })
             .getMany());
     }
+    findTeamInfo(teamId) {
+        return rxjs_1.from(this.teamRepository.createQueryBuilder('team')
+            .addSelect('group.name')
+            .addSelect('group.id')
+            .addSelect('league.id')
+            .addSelect('tournament.startDateTime')
+            .addSelect('homeMatch.id')
+            .addSelect('outMatch.id')
+            .innerJoin('team.outMatches', 'outMatch')
+            .innerJoin('team.homeMatches', 'homeMatch')
+            .innerJoin('team.group', 'group')
+            .innerJoin('group.league', 'league')
+            .innerJoin('league.tournament', 'tournament')
+            .where('team.id = :id', { id: Number(teamId) })
+            .getOne());
+    }
 };
 TeamService = __decorate([
     common_1.Injectable(),

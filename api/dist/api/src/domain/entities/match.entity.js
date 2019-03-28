@@ -63,6 +63,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Match.prototype, "terrain", void 0);
 __decorate([
+    typeorm_1.Column({ nullable: true }),
+    __metadata("design:type", String)
+], Match.prototype, "comment", void 0);
+__decorate([
     typeorm_1.ManyToOne(type => referee_entity_1.Referee, referee => referee.matches, { cascade: false, eager: true, nullable: true }),
     __metadata("design:type", referee_entity_1.Referee)
 ], Match.prototype, "referee", void 0);

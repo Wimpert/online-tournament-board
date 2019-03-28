@@ -29,4 +29,8 @@ export class MatchService {
   findTournamentByMatch(match: any): Observable<Tournament> {
     return this.tournamentService.findByMatch({id: match.id} as Match);
   }
+
+  findMatchesWithTeam(ids: number[]): Observable<Match[]> {
+    return from(this.matchRepository.findByIds(ids));
+  }
 }

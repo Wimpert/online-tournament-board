@@ -45,6 +45,11 @@ export class TournamentController {
     return this.refereeService.findAll();
   }
 
+  @Get('/team/all/:leagueId')
+  getAllTeamsforTournament(@Param('leagueId') leagueId): Observable<Team[]> {
+    return this.teamService.findAllForLeagueId(leagueId);
+  }
+
   @Get(':id')
   findById(@Param('id') id): Observable<Tournament> {
     return this.tournamentService.findOne({id}).pipe(

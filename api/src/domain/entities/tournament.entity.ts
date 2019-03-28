@@ -11,6 +11,9 @@ export class Tournament extends AbstractEntity {
   @Column()
   name: string;
 
+  @Column()
+  startDateTime: Date;
+
   @ManyToOne(type => User, user => user.tournaments )
   user: User;
 

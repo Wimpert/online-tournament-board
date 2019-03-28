@@ -8,7 +8,7 @@ import { MatchService } from './match.service';
 import { LeagueService } from './league.service';
 import { League } from '../entities/league.entity';
 import { UpdateResult, DeleteResult } from 'typeorm';
-import { Post, Request, Put, Delete } from '@nestjs/common';
+import { Post, Request, Put, Delete, Query } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_TOKEN_NAME } from '../../constants';
 import { TournamentService } from './tournament.service';
@@ -35,10 +35,40 @@ export class PublicTournamentController {
               private teamService: TeamService, private refereeService: RefereeService) {}
 
   @Get('/all/teams')
-  findByUser(@Req() request: any): Observable<number> {
+  findAllTeam(@Req() request: any): Observable<Team[]> {
     return this.tournamentService.findIdOfFirstactive().pipe(
-      switchMap(tournamentId => this.teamService.findAllForTournamentId(tournamentId)),
+      switchMap(tournamentId => this.teamService.findAllForTournament(tournamentId)),
     );
+  }
+
+  @Get('/teaminfo/:id')
+  findTeamInfoDto(@Req() request: any, @Param('id') id ): Observable<{}> {
+    return this.teamService.findTeamInfo(id).pipe(
+      tap(console.log),
+    );
+  }
+
+  @Get('/matches/:teamId')
+  findAllMatchesForTeam(@Req() request: any, @Param('teamId') id ): Observable<{}> {
+    return this.teamService.findTeamInfo(id).pipe(
+      tap(console.log),
+    );
+  }
+
+  @Get('/group/:groupId')
+  getGroupInfo(@Req() request: any, @Param('groupId') id ): Observable<{}> {
+    return this.groupService.findOne({id} as Group).pipe(
+      map((group: Group) => {
+        this.tournamentService.processMatchesOfGroup(group);
+        return group;
+      }),
+    );
+  }
+
+  @Get('/match')
+  getMatches(@Req() request: any, @Query('ids') ids): Observable<{}> {
+    const idsToFind = ids.split(',').map( numberString => Number(numberString));
+    return this.matchService.findMatchesWithTeam(idsToFind);
   }
 
 }

@@ -35,6 +35,9 @@ let MatchService = class MatchService {
     findTournamentByMatch(match) {
         return this.tournamentService.findByMatch({ id: match.id });
     }
+    findMatchesWithTeam(ids) {
+        return rxjs_1.from(this.matchRepository.findByIds(ids));
+    }
 };
 MatchService = __decorate([
     common_1.Injectable(),

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { from, Observable } from 'rxjs';
 import { Tournament } from 'domain/entities/tournament.entity';
+import { Match } from 'domain/entities/match.entity';
 
 @Injectable()
 export class TeamService {
@@ -21,13 +22,46 @@ export class TeamService {
     return from(this.teamRepository.delete(team));
   }
 
-  findAllForTournamentId(tournament: any): Observable<Team[]>{
+  findAllForTournament(tournament: any): Observable<Team[]>{
       return from(this.teamRepository.createQueryBuilder('team')
                   .innerJoin('team.group', 'group')
                   .innerJoin('group.league', 'league')
                   .innerJoin('league.tournament', 'tournament')
                   .where('tournament.id = :id', { id: tournament.id })
                   .getMany());
+  }
+
+  findAllForLeagueId(leagueId: any): Observable<Team[]>{
+    return from(this.teamRepository.createQueryBuilder('team')
+                .innerJoin('team.group', 'group')
+                .innerJoin('group.league', 'league')
+                .where('league.id = :id', { id: leagueId })
+                .getMany());
+}
+
+  findAllForLeague(league: any): Observable<Team[]>{
+    return from(this.teamRepository.createQueryBuilder('team')
+                .innerJoin('team.group', 'group')
+                .innerJoin('group.league', 'league')
+                .where('league.id = :id', { id: league.id })
+                .getMany());
+}
+
+  findTeamInfo(teamId: number): Observable<any>{
+    return from(this.teamRepository.createQueryBuilder('team')
+                .addSelect('group.name')
+                .addSelect('group.id')
+                .addSelect('league.id')
+                .addSelect('tournament.startDateTime')
+                .addSelect('homeMatch.id')
+                .addSelect('outMatch.id')
+                .innerJoin('team.outMatches', 'outMatch')
+                .innerJoin('team.homeMatches', 'homeMatch')
+                .innerJoin('team.group', 'group')
+                .innerJoin('group.league', 'league')
+                .innerJoin('league.tournament', 'tournament')
+                .where('team.id = :id' , {id: Number(teamId)})
+                .getOne());
   }
 
 }

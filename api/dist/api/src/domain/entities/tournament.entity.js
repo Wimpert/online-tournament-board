@@ -35,6 +35,10 @@ __decorate([
     __metadata("design:type", String)
 ], Tournament.prototype, "name", void 0);
 __decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", Date)
+], Tournament.prototype, "startDateTime", void 0);
+__decorate([
     typeorm_1.ManyToOne(type => user_entity_1.User, user => user.tournaments),
     __metadata("design:type", user_entity_1.User)
 ], Tournament.prototype, "user", void 0);
