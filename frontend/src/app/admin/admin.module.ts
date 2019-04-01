@@ -13,6 +13,7 @@ import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { QuickMatchEditorComponent } from './quick-match-editor/quick-match-editor.component';
 import { RoundEditorComponent } from './round-editor/round-editor.component';
 import { ObjectPickerComponent } from './object-picker/object-picker.component';
+import { PrintComponent } from './print/print.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,7 @@ import { ObjectPickerComponent } from './object-picker/object-picker.component';
     MatNativeDateModule
   ],
   declarations: [TournamentListComponent, TournamentEditorComponent, LeagueEditorComponent,
-     GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent, ObjectPickerComponent],
+     GroupEditorComponent, TeamEditorComponent, MatchEditorComponent, QuickMatchEditorComponent, RoundEditorComponent, ObjectPickerComponent, PrintComponent],
   providers: [TournamentService]
 })
 export class AdminModule { }

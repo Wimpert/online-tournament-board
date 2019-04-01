@@ -7,6 +7,9 @@ export class Match {
   homeTeamScore: number;
   outTeamScore: number;
   matchNr: number;
+  terrain: string;
+  minutes: number;
+  hour: number;
   referee: {id: number, name: string};
 
 }

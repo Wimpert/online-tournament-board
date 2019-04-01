@@ -13,6 +13,8 @@ import { of } from 'rxjs/observable/of';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
 import { Team } from '../../../models/team.model';
+import { group } from '@angular/animations';
+import { Round } from '../../../models/round.model';
 
 @Component({
   selector: 'app-tournament-editor',
@@ -113,13 +115,17 @@ export class TournamentEditorComponent implements OnInit {
 
       this.allMatches$ = this.tournament$.pipe(
         map((tournament: Tournament) => {
-          return tournament.leagues.reduce((acc: Match[], league: League) => {
+          return [...tournament.leagues.reduce((acc: Match[], league: League) => {
             league.groups.forEach((group: Group) => {
               group.matches.forEach(match => acc = [... acc, match]);
             });
+            league.rounds.forEach((round: Round) => {
+              round.matches.forEach(match => acc = [... acc, match]);
+            });
             return acc;
-          }, []);
-        })
+          }, [])];
+        }),
+        shareReplay()
       );
 
 

@@ -9,6 +9,9 @@
         <mat-card>
            <app-quick-match-editor [allMatches]="allMatches$ | async"></app-quick-match-editor>
         </mat-card>
+        <mat-card>
+          <app-print [allMatches]="allMatches$ | async"></app-print>
+       </mat-card>
     </div>
     <mat-tab-group mat-align-tabs="end" >
       <mat-tab  *ngFor="let league of tournament.leagues; trackBy: trackLeague" label="{{league.name}}">
