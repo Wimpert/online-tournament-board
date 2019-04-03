@@ -31,7 +31,6 @@ let TournamentService = class TournamentService {
         this.authService = authService;
     }
     findOne(tournament) {
-        console.log(tournament);
         return rxjs_1.from(this.tournamentRepository.findOne(tournament)).pipe(operators_1.tap(console.log), operators_1.map((tournament) => this.processMatches(tournament)), operators_1.map((tournament) => {
             tournament.leagues.forEach((league) => {
                 league.groups.forEach((group) => {
@@ -123,16 +122,21 @@ let TournamentService = class TournamentService {
             tour.leagues[0].groups.push(group);
         });
         const rounds = ['Round of 16', 'Quarter Final', 'Semi Final', 'Final'];
-        rounds.forEach((roundName) => {
+        rounds.forEach((roundName, roundIndex) => {
             if (!tour.leagues[0].rounds) {
                 tour.leagues[0].rounds = [];
             }
             tour.leagues[0].rounds.push(new round_entity_1.Round(roundName));
             tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches = [];
             let i = 0;
+            let j = 1;
             while (i < 16) {
-                tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches.push(new match_entity_1.RoundMatch(undefined, undefined, matchNR++, 3, 10, 20));
+                if (j > 8) {
+                    j = 1;
+                }
+                tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches.push(new match_entity_1.RoundMatch(undefined, undefined, matchNR++, j, 10, 20));
                 i++;
+                j++;
             }
         });
         return tour;
@@ -141,39 +145,42 @@ let TournamentService = class TournamentService {
         const returnVal = Object.assign({}, tournament);
         returnVal.leagues.forEach((league) => {
             league.groups.forEach((group) => {
-                group.teams.forEach((team) => team.reset());
-                group.allMatchesPlayed = true;
-                group.matches.forEach((match) => {
-                    if (match.homeTeamScore !== undefined && match.homeTeamScore !== null && match.outTeamScore !== undefined && match.outTeamScore !== null) {
-                        const homeTeam = group.getTeamById(match.homeTeam.id);
-                        const outTeam = group.getTeamById(match.outTeam.id);
-                        homeTeam.matchesPlayed++;
-                        outTeam.matchesPlayed++;
-                        if (match.getOutCome() === constants_1.HOME_TEAM_WINS) {
-                            homeTeam.matchesWon++;
-                            outTeam.matchesLost++;
-                        }
-                        else if (match.getOutCome() === constants_1.OUT_TEAM_WINS) {
-                            homeTeam.matchesLost++;
-                            outTeam.matchesWon++;
-                        }
-                        else {
-                            homeTeam.matchesDrawed++;
-                            outTeam.matchesDrawed++;
-                        }
-                        outTeam.goalsScored += match.outTeamScore;
-                        outTeam.goalsConcieved += match.homeTeamScore;
-                        homeTeam.goalsScored += match.homeTeamScore;
-                        homeTeam.goalsConcieved += match.outTeamScore;
-                    }
-                    else {
-                        group.allMatchesPlayed = false;
-                    }
-                });
-                group.teams.forEach((team) => { team.points = 3 * team.matchesWon + team.matchesDrawed; });
+                this.processMatchesOfGroup(group);
             });
         });
         return returnVal;
+    }
+    processMatchesOfGroup(group) {
+        group.teams.forEach((team) => team.reset());
+        group.allMatchesPlayed = true;
+        group.matches.forEach((match) => {
+            if (match.homeTeamScore !== undefined && match.homeTeamScore !== null && match.outTeamScore !== undefined && match.outTeamScore !== null) {
+                const homeTeam = group.getTeamById(match.homeTeam.id);
+                const outTeam = group.getTeamById(match.outTeam.id);
+                homeTeam.matchesPlayed++;
+                outTeam.matchesPlayed++;
+                if (match.getOutCome() === constants_1.HOME_TEAM_WINS) {
+                    homeTeam.matchesWon++;
+                    outTeam.matchesLost++;
+                }
+                else if (match.getOutCome() === constants_1.OUT_TEAM_WINS) {
+                    homeTeam.matchesLost++;
+                    outTeam.matchesWon++;
+                }
+                else {
+                    homeTeam.matchesDrawed++;
+                    outTeam.matchesDrawed++;
+                }
+                outTeam.goalsScored += match.outTeamScore;
+                outTeam.goalsConcieved += match.homeTeamScore;
+                homeTeam.goalsScored += match.homeTeamScore;
+                homeTeam.goalsConcieved += match.outTeamScore;
+            }
+            else {
+                group.allMatchesPlayed = false;
+            }
+        });
+        group.teams.forEach((team) => { team.points = 3 * team.matchesWon + team.matchesDrawed; });
     }
     compareTeams(teama, teamb) {
         if (teama.points !== teamb.points) {

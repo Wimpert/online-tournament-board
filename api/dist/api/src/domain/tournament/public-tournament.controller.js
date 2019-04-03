@@ -33,8 +33,8 @@ let PublicTournamentController = class PublicTournamentController {
         this.teamService = teamService;
         this.refereeService = refereeService;
     }
-    findByUser(request) {
-        return this.tournamentService.findIdOfFirstactive().pipe(operators_1.switchMap(tournamentId => this.teamService.findAllForTournamentId(tournamentId)));
+    findAllTeam(request) {
+        return this.tournamentService.findIdOfFirstactive().pipe(operators_1.switchMap(tournamentId => this.teamService.findAllForTournament(tournamentId)));
     }
     findTeamInfoDto(request, id) {
         return this.teamService.findTeamInfo(id).pipe(operators_1.tap(console.log));
@@ -43,7 +43,10 @@ let PublicTournamentController = class PublicTournamentController {
         return this.teamService.findTeamInfo(id).pipe(operators_1.tap(console.log));
     }
     getGroupInfo(request, id) {
-        return this.groupService.findOne({ id });
+        return this.groupService.findOne({ id }).pipe(operators_1.map((group) => {
+            this.tournamentService.processMatchesOfGroup(group);
+            return group;
+        }));
     }
     getMatches(request, ids) {
         const idsToFind = ids.split(',').map(numberString => Number(numberString));
@@ -56,7 +59,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", rxjs_1.Observable)
-], PublicTournamentController.prototype, "findByUser", null);
+], PublicTournamentController.prototype, "findAllTeam", null);
 __decorate([
     common_2.Get('/teaminfo/:id'),
     __param(0, common_2.Req()), __param(1, common_2.Param('id')),

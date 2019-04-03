@@ -46,6 +46,9 @@ let TournamentController = class TournamentController {
     getAllReferees(request) {
         return this.refereeService.findAll();
     }
+    getAllTeamsforTournament(leagueId) {
+        return this.teamService.findAllForLeagueId(leagueId);
+    }
     findById(id) {
         return this.tournamentService.findOne({ id }).pipe(operators_1.map(tournament => {
             if (tournament === undefined) {
@@ -145,6 +148,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], TournamentController.prototype, "getAllReferees", null);
+__decorate([
+    common_2.Get('/team/all/:leagueId'),
+    __param(0, common_2.Param('leagueId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], TournamentController.prototype, "getAllTeamsforTournament", null);
 __decorate([
     common_2.Get(':id'),
     __param(0, common_2.Param('id')),

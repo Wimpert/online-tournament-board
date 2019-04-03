@@ -26,7 +26,6 @@ export class TournamentService {
   ) {}
 
   findOne(tournament: any): Observable<Tournament> {
-    console.log(tournament);
     return from(this.tournamentRepository.findOne(tournament)).pipe(
       tap(console.log),
       map((tournament: Tournament) => this.processMatches(tournament)),
@@ -164,7 +163,7 @@ export class TournamentService {
 
     const rounds = ['Round of 16', 'Quarter Final', 'Semi Final', 'Final'];
 
-    rounds.forEach((roundName) => {
+    rounds.forEach((roundName, roundIndex) => {
         if (!tour.leagues[0].rounds){
           tour.leagues[0].rounds = [];
         }
@@ -172,9 +171,15 @@ export class TournamentService {
         tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches = [];
 
         let i = 0;
+        let j = 1;
+
         while (i < 16){
-          tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches.push(new RoundMatch(undefined, undefined, matchNR++, 3, 10, 20));
+          if (j > 8){
+            j = 1;
+          }
+          tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches.push(new RoundMatch(undefined, undefined, matchNR++, j, 10, 20));
           i++;
+          j++;
         }
 
     });

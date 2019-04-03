@@ -27,12 +27,26 @@ let TeamService = class TeamService {
     delete(team) {
         return rxjs_1.from(this.teamRepository.delete(team));
     }
-    findAllForTournamentId(tournament) {
+    findAllForTournament(tournament) {
         return rxjs_1.from(this.teamRepository.createQueryBuilder('team')
             .innerJoin('team.group', 'group')
             .innerJoin('group.league', 'league')
             .innerJoin('league.tournament', 'tournament')
             .where('tournament.id = :id', { id: tournament.id })
+            .getMany());
+    }
+    findAllForLeagueId(leagueId) {
+        return rxjs_1.from(this.teamRepository.createQueryBuilder('team')
+            .innerJoin('team.group', 'group')
+            .innerJoin('group.league', 'league')
+            .where('league.id = :id', { id: leagueId })
+            .getMany());
+    }
+    findAllForLeague(league) {
+        return rxjs_1.from(this.teamRepository.createQueryBuilder('team')
+            .innerJoin('team.group', 'group')
+            .innerJoin('group.league', 'league')
+            .where('league.id = :id', { id: league.id })
             .getMany());
     }
     findTeamInfo(teamId) {
