@@ -28,6 +28,14 @@ let LeagueService = class LeagueService {
     findOne(league) {
         return rxjs_1.from(this.leagueRepository.findOne(league, { relations: ['tournament'] }));
     }
+    findAllLeagues(tournament) {
+        return rxjs_1.from(this.leagueRepository.createQueryBuilder('league')
+            .leftJoinAndSelect('league.groups', 'group')
+            .leftJoinAndSelect('league.rounds', 'round')
+            .leftJoin('league.tournament', 'tournament')
+            .where('tournament.id = :id', { id: tournament.id })
+            .getMany());
+    }
 };
 LeagueService = __decorate([
     common_1.Injectable(),

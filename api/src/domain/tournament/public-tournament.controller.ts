@@ -41,6 +41,13 @@ export class PublicTournamentController {
     );
   }
 
+  @Get('/all/leagues')
+  findAllLeagues(@Req() request: any): Observable<League[]> {
+    return this.tournamentService.findIdOfFirstactive().pipe(
+      switchMap(tournamentId => this.leagueService.findAllLeagues(tournamentId)),
+    );
+  }
+
   @Get('/teaminfo/:id')
   findTeamInfoDto(@Req() request: any, @Param('id') id ): Observable<{}> {
     return this.teamService.findTeamInfo(id).pipe(
@@ -62,6 +69,9 @@ export class PublicTournamentController {
         this.tournamentService.processMatchesOfGroup(group);
         return group;
       }),
+      map((group: Group) => {
+        return {...group , teams : group.teams.sort(this.tournamentService.compareTeams)};
+      }),
     );
   }
 
@@ -69,6 +79,13 @@ export class PublicTournamentController {
   getMatches(@Req() request: any, @Query('ids') ids): Observable<{}> {
     const idsToFind = ids.split(',').map( numberString => Number(numberString));
     return this.matchService.findMatchesWithTeam(idsToFind);
+  }
+
+  @Get('/match/all')
+  getAllMatches(@Req() request: any, @Query('ids') ids): Observable<{}> {
+    return this.tournamentService.findIdOfFirstactive().pipe(
+      switchMap(tournamentId => this.matchService.findAllForTournament(tournamentId)),
+    );
   }
 
 }

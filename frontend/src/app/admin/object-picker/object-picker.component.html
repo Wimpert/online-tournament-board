@@ -1,7 +1,9 @@
-<input type="text" [value]="pickedOption ? pickedOption[fieldName] : undefined" (keyup)="inputValueChanged($event)" class="value-container">
+<mat-form-field>
+<input type="text" matInput [value]="pickedOption ? pickedOption[fieldName] : undefined" (keyup)="inputValueChanged($event)" class="value-container">
+</mat-form-field>
 <div class="dropdown" *ngIf="filteredOptions && filteredOptions.length !== 0">
   <div *ngFor="let option of filteredOptions">
-    <div (click)="optionPickedHandler(option)">{{option[fieldName]}}</div>
+    <div (click)="optionPickedHandler(option)">{{option ? option[fieldName] : 'undefined'}}</div>
   </div>
 </div>
 

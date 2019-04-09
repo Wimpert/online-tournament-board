@@ -38,6 +38,20 @@ let MatchService = class MatchService {
     findMatchesWithTeam(ids) {
         return rxjs_1.from(this.matchRepository.findByIds(ids));
     }
+    findAllForTournament(tournament) {
+        return rxjs_1.from(this.matchRepository.createQueryBuilder('match')
+            .leftJoinAndSelect('match.homeTeam', 'homeTeam')
+            .leftJoinAndSelect('match.outTeam', 'outTeam')
+            .leftJoin('match.group', 'group')
+            .leftJoin('group.league', 'league')
+            .leftJoin('match.round', 'round')
+            .leftJoin('round.league', 'roundLeague')
+            .leftJoin('league.tournament', 'tournament')
+            .leftJoin('roundLeague.tournament', 'tournamentRound')
+            .where('tournament.id = :id', { id: tournament.id })
+            .orWhere('tournamentRound.id = :id', { id: tournament.id })
+            .getMany());
+    }
 };
 MatchService = __decorate([
     common_1.Injectable(),

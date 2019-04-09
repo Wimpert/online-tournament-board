@@ -22,4 +22,13 @@ export class LeagueService {
   findOne(league: any): Observable<any> {
     return from(this.leagueRepository.findOne(league, {relations: ['tournament']}));
   }
+
+  findAllLeagues(tournament: any): Observable<League[]>{
+    return from(this.leagueRepository.createQueryBuilder('league')
+    .leftJoinAndSelect('league.groups', 'group')
+    .leftJoinAndSelect('league.rounds', 'round')
+    .leftJoin('league.tournament', 'tournament')
+    .where('tournament.id = :id', { id: tournament.id })
+    .getMany());
+  }
 }

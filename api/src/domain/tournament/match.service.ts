@@ -33,4 +33,19 @@ export class MatchService {
   findMatchesWithTeam(ids: number[]): Observable<Match[]> {
     return from(this.matchRepository.findByIds(ids));
   }
+
+  findAllForTournament(tournament: any): Observable<Match[]>{
+    return from(this.matchRepository.createQueryBuilder('match')
+    .leftJoinAndSelect('match.homeTeam', 'homeTeam')
+    .leftJoinAndSelect('match.outTeam', 'outTeam')
+    .leftJoin('match.group', 'group')
+    .leftJoin('group.league', 'league')
+    .leftJoin('match.round', 'round')
+    .leftJoin('round.league', 'roundLeague')
+    .leftJoin('league.tournament', 'tournament')
+    .leftJoin('roundLeague.tournament', 'tournamentRound')
+    .where('tournament.id = :id', { id: tournament.id })
+    .orWhere('tournamentRound.id = :id', { id: tournament.id })
+    .getMany());
+  }
 }

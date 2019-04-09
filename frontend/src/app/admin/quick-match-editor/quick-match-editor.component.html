@@ -1,3 +1,5 @@
-<h5>Find Match:</h5>
-<label>Match number: </label><input matInput type="text" [(ngModel)]="matchNumber" (ngModelChange)="findMatch()">
+<div>
+  <label>Match nr: </label><input type="text" [(ngModel)]="matchNumber" (ngModelChange)="findMatch()">
 <app-match-editor [match]="match$ | async"></app-match-editor>
+</div>
+

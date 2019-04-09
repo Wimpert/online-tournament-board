@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output, HostListener, ElementRef } from '@angular/core';
+import { log } from 'util';
 
 @Component({
   selector: 'app-object-picker',
@@ -53,8 +54,13 @@ export class ObjectPickerComponent<T>  {
 
   inputValueChanged(event) {
     const value = (event && event.target && event.target.value) ? event.target.value : undefined;
-    if (value) {
-      this.filteredOptions = [...this._options.filter(option => option[this.fieldName] ? option[this.fieldName].toLowerCase().includes(value.toLowerCase()) : false)];
+    console.log(value);
+    if (value && value !== ((this.pickedOption && this.pickedOption[this.fieldName]) ? this.pickedOption[this.fieldName] :  '' )) {
+      this.filteredOptions = [...this._options.filter(option => option[this.fieldName] ?
+        option[this.fieldName].toLowerCase().includes(value.toLowerCase()) : false)];
+    }
+    if (!value) {
+      this.filteredOptions = [undefined];
     }
   }
 

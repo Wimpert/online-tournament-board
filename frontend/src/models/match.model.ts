@@ -4,8 +4,8 @@ export class Match {
   id: number;
   homeTeam: Team;
   outTeam: Team;
-  homeTeamScore: number;
-  outTeamScore: number;
+  homeTeamScore: number | string;
+  outTeamScore: number | string;
   matchNr: number;
   terrain: string;
   minutes: number;

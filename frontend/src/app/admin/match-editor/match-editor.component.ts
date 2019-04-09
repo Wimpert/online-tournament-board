@@ -24,6 +24,13 @@ export class MatchEditorComponent implements OnInit {
   }
 
   matchChanged() {
+    if (this.match.homeTeamScore === '') {
+      this.match.homeTeamScore = null;
+    }
+    if (this.match.outTeamScore === '') {
+      this.match.outTeamScore = null;
+    }
+    console.log(this.match.homeTeamScore);
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT, {bubbles: true, detail: this.match}));
   }
 
@@ -33,7 +40,7 @@ export class MatchEditorComponent implements OnInit {
 
   homeTeamOptionPickedHandler(team: Team) {
     const updatedMatch: Match = {
-      ...this.match, homeTeam : {id: team.id} as Team
+      ...this.match, homeTeam : team ? {id: team.id} as Team : null
     };
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT, {bubbles: true, detail: updatedMatch}));
     this.match.homeTeam = team;
@@ -41,7 +48,7 @@ export class MatchEditorComponent implements OnInit {
 
   outTeamOptionPickedHandler(team: Team) {
     const updatedMatch: Match = {
-      ...this.match, outTeam : {id: team.id} as Team
+      ...this.match, outTeam : team ? {id: team.id} as Team : null
     };
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT, {bubbles: true, detail: updatedMatch}));
     this.match.outTeam = team;

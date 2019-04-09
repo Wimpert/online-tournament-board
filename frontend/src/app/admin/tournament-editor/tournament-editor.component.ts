@@ -46,7 +46,7 @@ export class TournamentEditorComponent implements OnInit {
       switchMap(date => this.tournamentService.update({id: this.tournamentId, startDateTime: date}))
     ),
     fromEvent(this.element.nativeElement, MATCH_UPDATE_EVENT).pipe(
-      debounceTime(1000),
+      debounceTime(100),
       map((event: CustomEvent) => event.detail),
       switchMap( (match: Match) => this.tournamentService.updateMatch(match))
     ),
@@ -58,7 +58,7 @@ export class TournamentEditorComponent implements OnInit {
     ),
 
     fromEvent(this.element.nativeElement, GROUP_UPDATE_EVENT).pipe(
-      debounceTime(1000),
+      debounceTime(100),
       map((event: CustomEvent) => event.detail),
       switchMap( (group: Group) => this.tournamentService.updateGroup(group))
     ),
@@ -68,7 +68,7 @@ export class TournamentEditorComponent implements OnInit {
     ),
 
     fromEvent(this.element.nativeElement, TEAM_UPDATE_EVENT).pipe(
-      debounceTime(1000),
+      debounceTime(100),
       map((event: CustomEvent) => event.detail),
       switchMap( (team: Team) => this.tournamentService.updateTeam(team))
     ),

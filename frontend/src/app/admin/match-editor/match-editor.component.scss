@@ -1,9 +1,9 @@
 
 :host{
 
-  & > div {
+  & > *:first-child {
     display: flex;
-  flex-direction: row;
+    flex-direction: row;
 
   &> *{
     flex-grow: 1;
@@ -18,7 +18,15 @@
 
 
     & > .number-box{
-       width: 3em;
+       width: 2em;
+       border-bottom: 1px solid lightgrey;
+    }
+
+    span{
+      line-height: 55px;
+      flex-shrink: 1;
+      flex-grow: 0;
+      margin-right: 10px
     }
   }
 

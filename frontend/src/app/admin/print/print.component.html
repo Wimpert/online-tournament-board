@@ -1,6 +1,4 @@
 <div>
-
-  Van: <input type="text" id="print-from" [(ngModel)]="from">
-  tot: <input type="text" id="print-to" [(ngModel)]="to">
+  Print Van: <input type="text" id="print-from" [(ngModel)]="from"> tot: <input type="text" id="print-to" [(ngModel)]="to">
   <button  (click)="download()" mat-button color="primary" [disabled]="from === undefined || to === undefined">print</button>
 </div>

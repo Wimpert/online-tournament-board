@@ -55,11 +55,11 @@ export class TeamService {
                 .addSelect('tournament.startDateTime')
                 .addSelect('homeMatch.id')
                 .addSelect('outMatch.id')
-                .innerJoin('team.outMatches', 'outMatch')
-                .innerJoin('team.homeMatches', 'homeMatch')
-                .innerJoin('team.group', 'group')
-                .innerJoin('group.league', 'league')
-                .innerJoin('league.tournament', 'tournament')
+                .leftJoin('team.outMatches', 'outMatch')
+                .leftJoin('team.homeMatches', 'homeMatch')
+                .leftJoin('team.group', 'group')
+                .leftJoin('group.league', 'league')
+                .leftJoin('league.tournament', 'tournament')
                 .where('team.id = :id' , {id: Number(teamId)})
                 .getOne());
   }

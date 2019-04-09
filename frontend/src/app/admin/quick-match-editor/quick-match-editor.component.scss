@@ -1,0 +1,11 @@
+:host > div:first-child{
+
+  &>input{
+    border: none;
+    border-bottom: solid 1px lightgrey;
+    width: 2em;
+  }
+   &>*:last-child{
+     flex-grow: 1;
+   }
+}

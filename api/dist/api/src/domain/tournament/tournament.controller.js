@@ -61,6 +61,7 @@ let TournamentController = class TournamentController {
         return this.leagueService.update(league);
     }
     updateMatch(match) {
+        console.log(match);
         return this.matchService.update(match).pipe(operators_1.switchMap(_ => this.tournamentService.findByMatch(match)));
     }
     updateTeam(team) {
