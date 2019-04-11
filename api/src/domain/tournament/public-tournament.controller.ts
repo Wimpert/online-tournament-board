@@ -7,32 +7,26 @@ import { Match, GroupMatch } from '../entities/match.entity';
 import { MatchService } from './match.service';
 import { LeagueService } from './league.service';
 import { League } from '../entities/league.entity';
-import { UpdateResult, DeleteResult } from 'typeorm';
-import { Post, Request, Put, Delete, Query } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { JWT_TOKEN_NAME } from '../../constants';
+import { Query } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import {
   Controller,
   Get,
   Param,
-  Body,
-  HttpStatus,
-  HttpException,
   Req,
 } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
-import { map, filter, switchMap, tap } from 'rxjs/operators';
-import { RefereeService } from './referee.service';
-import { Referee } from '../entities/referee.entity';
+import { Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { RoundService } from './round.service';
 
 @Controller('public-tournament')
 export class PublicTournamentController {
-  constructor(private readonly tournamentService: TournamentService, private jwtService: JwtService,
+  constructor(private readonly tournamentService: TournamentService,
               private leagueService: LeagueService,
               private matchService: MatchService,
               private groupService: GroupService,
-              private teamService: TeamService, private refereeService: RefereeService) {}
+              private teamService: TeamService,
+              private roundService: RoundService) {}
 
   @Get('/all/teams')
   findAllTeam(@Req() request: any): Observable<Team[]> {
@@ -72,6 +66,13 @@ export class PublicTournamentController {
       map((group: Group) => {
         return {...group , teams : group.teams.sort(this.tournamentService.compareTeams)};
       }),
+    );
+  }
+
+  @Get('/round/:roundId')
+  getRoundInfo(@Param('roundId') id ): Observable<{}> {
+    return this.roundService.findOne({id}).pipe(
+      tap(console.log),
     );
   }
 

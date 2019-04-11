@@ -1,3 +1,5 @@
+import { Round } from './entities/round.entity';
+import { RoundService } from './tournament/round.service';
 import { PublicTournamentController } from './tournament/public-tournament.controller';
 import { TeamService } from './tournament/team.service.';
 import { Team } from './entities/team.entity';
@@ -21,9 +23,10 @@ import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { RefereeService } from './tournament/referee.service';
 import { Referee } from './entities/referee.entity';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match, Group, Team, Referee]), AuthModule],
-  providers: [ TournamentService, UserService, AuthService, LeagueService, MatchService, GroupService, TeamService, RefereeService],
+  imports: [TypeOrmModule.forFeature([Tournament, User, League, Match, Group, Team, Referee, Round]), AuthModule],
+  providers: [ TournamentService, UserService, AuthService, LeagueService, MatchService, GroupService, TeamService, RefereeService, RoundService],
   controllers: [TournamentController, UserController, LoginController, PublicTournamentController],
 })
 export class DomainModule {

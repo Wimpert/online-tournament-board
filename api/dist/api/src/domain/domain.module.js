@@ -6,6 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const round_entity_1 = require("./entities/round.entity");
+const round_service_1 = require("./tournament/round.service");
 const public_tournament_controller_1 = require("./tournament/public-tournament.controller");
 const team_service_1 = require("./tournament/team.service.");
 const team_entity_1 = require("./entities/team.entity");
@@ -37,8 +39,8 @@ let DomainModule = class DomainModule {
 };
 DomainModule = __decorate([
     common_1.Module({
-        imports: [typeorm_1.TypeOrmModule.forFeature([tournament_entity_1.Tournament, user_entity_1.User, league_entity_1.League, match_entity_1.Match, group_entity_1.Group, team_entity_1.Team, referee_entity_1.Referee]), auth_module_1.AuthModule],
-        providers: [tournament_service_1.TournamentService, user_service_1.UserService, auth_service_1.AuthService, league_service_1.LeagueService, match_service_1.MatchService, group_service_1.GroupService, team_service_1.TeamService, referee_service_1.RefereeService],
+        imports: [typeorm_1.TypeOrmModule.forFeature([tournament_entity_1.Tournament, user_entity_1.User, league_entity_1.League, match_entity_1.Match, group_entity_1.Group, team_entity_1.Team, referee_entity_1.Referee, round_entity_1.Round]), auth_module_1.AuthModule],
+        providers: [tournament_service_1.TournamentService, user_service_1.UserService, auth_service_1.AuthService, league_service_1.LeagueService, match_service_1.MatchService, group_service_1.GroupService, team_service_1.TeamService, referee_service_1.RefereeService, round_service_1.RoundService],
         controllers: [tournament_controller_1.TournamentController, user_controller_1.UserController, login_controller_1.LoginController, public_tournament_controller_1.PublicTournamentController],
     })
 ], DomainModule);

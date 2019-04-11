@@ -17,21 +17,19 @@ const group_service_1 = require("./group.service");
 const match_service_1 = require("./match.service");
 const league_service_1 = require("./league.service");
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 const tournament_service_1 = require("./tournament.service");
 const common_2 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
-const referee_service_1 = require("./referee.service");
+const round_service_1 = require("./round.service");
 let PublicTournamentController = class PublicTournamentController {
-    constructor(tournamentService, jwtService, leagueService, matchService, groupService, teamService, refereeService) {
+    constructor(tournamentService, leagueService, matchService, groupService, teamService, roundService) {
         this.tournamentService = tournamentService;
-        this.jwtService = jwtService;
         this.leagueService = leagueService;
         this.matchService = matchService;
         this.groupService = groupService;
         this.teamService = teamService;
-        this.refereeService = refereeService;
+        this.roundService = roundService;
     }
     findAllTeam(request) {
         return this.tournamentService.findIdOfFirstactive().pipe(operators_1.switchMap(tournamentId => this.teamService.findAllForTournament(tournamentId)));
@@ -52,6 +50,9 @@ let PublicTournamentController = class PublicTournamentController {
         }), operators_1.map((group) => {
             return Object.assign({}, group, { teams: group.teams.sort(this.tournamentService.compareTeams) });
         }));
+    }
+    getRoundInfo(id) {
+        return this.roundService.findOne({ id }).pipe(operators_1.tap(console.log));
     }
     getMatches(request, ids) {
         const idsToFind = ids.split(',').map(numberString => Number(numberString));
@@ -97,6 +98,13 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], PublicTournamentController.prototype, "getGroupInfo", null);
 __decorate([
+    common_2.Get('/round/:roundId'),
+    __param(0, common_2.Param('roundId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], PublicTournamentController.prototype, "getRoundInfo", null);
+__decorate([
     common_2.Get('/match'),
     __param(0, common_2.Req()), __param(1, common_1.Query('ids')),
     __metadata("design:type", Function),
@@ -112,11 +120,12 @@ __decorate([
 ], PublicTournamentController.prototype, "getAllMatches", null);
 PublicTournamentController = __decorate([
     common_2.Controller('public-tournament'),
-    __metadata("design:paramtypes", [tournament_service_1.TournamentService, jwt_1.JwtService,
+    __metadata("design:paramtypes", [tournament_service_1.TournamentService,
         league_service_1.LeagueService,
         match_service_1.MatchService,
         group_service_1.GroupService,
-        team_service_1.TeamService, referee_service_1.RefereeService])
+        team_service_1.TeamService,
+        round_service_1.RoundService])
 ], PublicTournamentController);
 exports.PublicTournamentController = PublicTournamentController;
 //# sourceMappingURL=public-tournament.controller.js.map
