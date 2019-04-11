@@ -38,7 +38,9 @@ export class MatchEditorComponent implements OnInit {
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_REMOVE_EVENT, {bubbles: true, detail: this.match}));
   }
 
+  //TODO penalties !
   homeTeamOptionPickedHandler(team: Team) {
+    qsdmfkjqsm;
     const updatedMatch: Match = {
       ...this.match, homeTeam : team ? {id: team.id} as Team : null
     };

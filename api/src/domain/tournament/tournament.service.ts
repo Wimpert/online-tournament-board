@@ -161,7 +161,7 @@ export class TournamentService {
        tour.leagues[0].groups.push(group);
     });
 
-    const rounds = ['Round of 16', 'Quarter Final', 'Semi Final', 'Final'];
+    const rounds = ['8ste Finale', 'Kwart finale', 'Halve Final', 'Finale'];
 
     rounds.forEach((roundName, roundIndex) => {
         if (!tour.leagues[0].rounds){
