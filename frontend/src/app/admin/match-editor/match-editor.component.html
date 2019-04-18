@@ -4,7 +4,9 @@
   <span *ngIf="!possibleTeamsInMatch">{{match.homeTeam ? match.homeTeam.name : ""}}</span>
 
   <input matInput type="text" class="number-box" id="{{match.id}}.homeTeamScore" [(ngModel)]="match.homeTeamScore" (ngModelChange)="matchChanged()">
+  <input matInput type="text" class="number-box" placeholder="p" *ngIf="matchIsDraw()" id="{{match.id}}.homeTeamPenaltyScore" [(ngModel)]="match.homeTeamPenaltyScore" (ngModelChange)="matchChanged()">
   <span>-</span>
+  <input matInput type="text" class="number-box" placeholder="p" *ngIf="matchIsDraw()" id="{{match.id}}.outTeamPenaltyScore" [(ngModel)]="match.outTeamPenaltyScore" (ngModelChange)="matchChanged()">
   <input matInput type="text"  class="number-box" id="{{match.id}}.outTeamScore" [(ngModel)]="match.outTeamScore" (ngModelChange)="matchChanged()">
   <app-object-picker  *ngIf="possibleTeamsInMatch" [options]="possibleTeamsInMatch" [fieldName]="'name'" [pickedOptionId]="match && match.outTeam ? match.outTeam.id : undefined" (optionPicked)="outTeamOptionPickedHandler($event)"></app-object-picker>
   <span  *ngIf="!possibleTeamsInMatch">{{match.outTeam ? match.outTeam.name : ""}}</span>

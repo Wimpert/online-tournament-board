@@ -1,3 +1,4 @@
+import { log } from 'util';
 import { Team } from './../../../models/team.model';
 import { MATCH_UPDATE_EVENT, MATCH_REMOVE_EVENT } from './../constants';
 import { Match } from './../../../models/match.model';
@@ -13,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 export class MatchEditorComponent implements OnInit {
 
   @Input() match: Match;
+  @Input() isRoundMatch: boolean;
   @Input() possibleTeamsInMatch: Team[];
 
   allReferees$: Observable<{name: string, id: number}[]>;
@@ -30,7 +32,7 @@ export class MatchEditorComponent implements OnInit {
     if (this.match.outTeamScore === '') {
       this.match.outTeamScore = null;
     }
-    console.log(this.match.homeTeamScore);
+
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT, {bubbles: true, detail: this.match}));
   }
 
@@ -38,9 +40,7 @@ export class MatchEditorComponent implements OnInit {
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_REMOVE_EVENT, {bubbles: true, detail: this.match}));
   }
 
-  //TODO penalties !
   homeTeamOptionPickedHandler(team: Team) {
-    qsdmfkjqsm;
     const updatedMatch: Match = {
       ...this.match, homeTeam : team ? {id: team.id} as Team : null
     };
@@ -59,6 +59,13 @@ export class MatchEditorComponent implements OnInit {
   refereeOptionPickedHandler(referee: {id: number, name: string}) {
     this.match.referee = referee;
     this.element.nativeElement.dispatchEvent(new CustomEvent(MATCH_UPDATE_EVENT, {bubbles: true, detail: this.match}));
+  }
+
+  matchIsDraw() {
+    return this.isRoundMatch
+            && this.match.homeTeamScore !== null
+            && this.match.outTeamScore !== null
+            && this.match.homeTeamScore === this.match.outTeamScore;
   }
 
 }
