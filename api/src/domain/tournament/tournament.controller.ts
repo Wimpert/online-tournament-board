@@ -69,7 +69,12 @@ export class TournamentController {
 
   @Put('/match')
   updateMatch(@Body() match: Match): Observable<Tournament> {
-    console.log(match);
+    if(match.minutes === ''){
+      match.minutes = null;
+    }
+    if(match.hour === ''){
+      match.hour = null;
+    }
     return this.matchService.update(match).pipe(
       switchMap(_ => this.tournamentService.findByMatch(match)),
     );
