@@ -66,14 +66,14 @@ let TournamentService = class TournamentService {
     }
     createNew(userId) {
         const allTeams = [
-            ['JH \'t Arsenaal', 'Mavito bvba', 'PTC De Vlasschaard', 'MVC Omniflor'],
-            ['Hombres Calientes', 'De Carlsbergskes', 'Par Hazard', 'Stasebeke'],
-            ['Dakwerken Dimi', 'DRST Eclips', 'Hoste-Concept', 'MVC The Comix'],
-            ['Whoepi-Zwevegem', 'Hundes Intertapis', 'MVC Café De Gouden Aap', '1255 Snooker Pocket'],
-            ['Spectrum', 'Re-United', 'Samba', 'MVC Vermeren'],
-            ['FC Dutoit', 'Decorte zotten', 'Den befkeuning & Co', 'Los Borrachos'],
-            ['sv Ziggy', 'BP De Vlasbloem', 'FC Kruisband', 'Whoepi-Boys'],
-            ['Dynamo Molhoek', 'MVC Foliefotografie', 'De Seizoeners', 'DRST Eclips Zuipteam'],
+            ['Par Hazard', 'De Gouden Aap', 'Het lag aan de bal', 'FC Baco Sport'],
+            ['Whoepi-Boys', 'Abicon', 'Plakwerken Muylle', 'Mvc Moeder Harelbeekse'],
+            ['Samba', 'La Galaxie', 'Jazzy', 'Mavito'],
+            ['Hundes Intertapis', 'Decorte Zotten', 'Hombres Calientes', 'FC Stadion'],
+            ['Dema-Poels', 'Re-United', 'MVC Vermeeren Travel', 'El Toros Locos'],
+            ['Aalbeke Sport', 'MVC Foliefotografie', 'VVEK', 'De Copains'],
+            ['MVC Le Moulin', 'FC Strand Associates', 'KFC Rossem', 'Spartak Stasegem'],
+            ['Frituur Whoepi', 'Los Borrachos', 'Ninety-four', 'Los Piratas'],
         ];
         const groupLetter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         const tour = new tournament_entity_1.Tournament();
@@ -121,7 +121,7 @@ let TournamentService = class TournamentService {
             }
             tour.leagues[0].groups.push(group);
         });
-        const rounds = ['Round of 16', 'Quarter Final', 'Semi Final', 'Final'];
+        const rounds = ['8ste Finale', 'Kwart finale', 'Halve Final', 'Finale'];
         rounds.forEach((roundName, roundIndex) => {
             if (!tour.leagues[0].rounds) {
                 tour.leagues[0].rounds = [];
@@ -129,10 +129,10 @@ let TournamentService = class TournamentService {
             tour.leagues[0].rounds.push(new round_entity_1.Round(roundName));
             tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches = [];
             let i = 0;
-            let j = 1;
+            let j = 2;
             while (i < 16) {
-                if (j > 8) {
-                    j = 1;
+                if (j > 9) {
+                    j = 2;
                 }
                 tour.leagues[0].rounds[tour.leagues[0].rounds.length - 1].matches.push(new match_entity_1.RoundMatch(undefined, undefined, matchNR++, j, 10, 20));
                 i++;
