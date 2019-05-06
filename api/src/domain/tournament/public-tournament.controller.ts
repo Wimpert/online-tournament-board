@@ -44,16 +44,12 @@ export class PublicTournamentController {
 
   @Get('/teaminfo/:id')
   findTeamInfoDto(@Req() request: any, @Param('id') id ): Observable<{}> {
-    return this.teamService.findTeamInfo(id).pipe(
-      tap(console.log),
-    );
+    return this.teamService.findTeamInfo(id);
   }
 
   @Get('/matches/:teamId')
   findAllMatchesForTeam(@Req() request: any, @Param('teamId') id ): Observable<{}> {
-    return this.teamService.findTeamInfo(id).pipe(
-      tap(console.log),
-    );
+    return this.teamService.findTeamInfo(id);
   }
 
   @Get('/group/:groupId')
@@ -71,9 +67,7 @@ export class PublicTournamentController {
 
   @Get('/round/:roundId')
   getRoundInfo(@Param('roundId') id ): Observable<{}> {
-    return this.roundService.findOne({id}).pipe(
-      tap(console.log),
-    );
+    return this.roundService.findOne({id});
   }
 
   @Get('/match')

@@ -27,7 +27,6 @@ export class TournamentService {
 
   findOne(tournament: any): Observable<Tournament> {
     return from(this.tournamentRepository.findOne(tournament)).pipe(
-      tap(console.log),
       map((tournament: Tournament) => this.processMatches(tournament)),
       map((tournament: Tournament) => {
         tournament.leagues.forEach((league: League) => {
@@ -245,7 +244,7 @@ export class TournamentService {
         return teamb.goalsScored - teama.goalsScored;
     } else if (teama.goalsConcieved !== teamb.goalsConcieved) {
         // compare on goal diff:
-        return teamb.goalsConcieved - teama.goalsConcieved;
+        return teama.goalsConcieved - teamb.goalsConcieved;
     }
     //  else if (teama.internalIndex !== teamb.internalIndex) {
     //     // compare on goal diff:

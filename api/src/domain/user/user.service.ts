@@ -28,7 +28,6 @@ export class UserService {
     const salt = bcrypt.genSaltSync();
     const cryptedPassWord = bcrypt.hashSync(user.password, salt );
     userWithEncryptedPassword.password = cryptedPassWord;
-    console.log(userWithEncryptedPassword);
     return userWithEncryptedPassword;
     }
     return user;
